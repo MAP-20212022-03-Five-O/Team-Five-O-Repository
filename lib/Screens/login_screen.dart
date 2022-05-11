@@ -103,9 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   children: <Widget>[
                     TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.black87,
-                      ),
+                      style: textButtonStyle,
                       child: const Text(
                         'Forgot Password',
                         style: TextStyle(fontSize: 15),
@@ -121,9 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     const Text('Does not have account?'),
                     TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.black87,
-                      ),
+                      style: textButtonStyle,
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(fontSize: 15),

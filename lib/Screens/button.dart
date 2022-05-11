@@ -9,3 +9,7 @@ final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     borderRadius: BorderRadius.all(Radius.circular(20)),
   ),
 );
+
+final ButtonStyle textButtonStyle = TextButton.styleFrom(
+  primary: Colors.black87,
+);
