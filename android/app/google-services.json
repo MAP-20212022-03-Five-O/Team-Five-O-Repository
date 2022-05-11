@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "185943608058",
+    "project_id": "five-o-car-rental-5b4c7",
+    "storage_bucket": "five-o-car-rental-5b4c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185943608058:android:e2f56783b4b619232a5743",
+        "android_client_info": {
+          "package_name": "com.example.five_o_car_rental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185943608058-auc6tu0g7hu0pl5c4fb8m6pve3jmit76.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL-rhlJhRrt_gajQClNLnjIsYM0gB79OM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185943608058-auc6tu0g7hu0pl5c4fb8m6pve3jmit76.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
