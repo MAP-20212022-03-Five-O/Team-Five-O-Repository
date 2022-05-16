@@ -1,3 +1,4 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
@@ -12,11 +13,6 @@ class RegisterBody extends StatelessWidget {
 
   final _key = GlobalKey<FormState>();
 
-  TextEditingController icController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phonenoController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   FocusNode myFocusNode = FocusNode();
   final authService _auth = authService();
 
@@ -44,7 +40,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: nameController,
+                  controller: _state.nameController,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -75,7 +71,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: icController,
+                  controller: _state.icController,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -104,7 +100,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: phonenoController,
+                  controller: _state.phonenoController,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -129,7 +125,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: emailController,
+                  controller: _state.emailController,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -157,7 +153,7 @@ class RegisterBody extends StatelessWidget {
                     }
                   },
                   obscureText: true,
-                  controller: passwordController,
+                  controller: _state.passwordController,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -172,31 +168,27 @@ class RegisterBody extends StatelessWidget {
                               : Colors.black)),
                 ),
               ),
-              Row(
-                children: [
-                  ListTile(
-                    title: const Text("Car Owner"),
-                    leading: Radio(
-                      value: accountType.owner,
-                      groupValue: _state.type,
+              ListTile(
+                title: const Text("Car Owner"),
+                leading: Radio(
+                  value: accountType.owner,
+                  groupValue: _state.type,
 
-                      //toggle value of the the user type
-                      onChanged: (value) => _state.type = value,
-                      activeColor: Colors.green,
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text("Car Renter"),
-                    leading: Radio(
-                      value: accountType.renter,
-                      groupValue: _state.type,
+                  //toggle value of the the user type
+                  onChanged: (value) => _state.type = value,
+                  activeColor: Colors.green,
+                ),
+              ),
+              ListTile(
+                title: const Text("Car Renter"),
+                leading: Radio(
+                  value: accountType.renter,
+                  groupValue: _state.type,
 
-                      //toggle value of the the user type
-                      onChanged: (value) => _state.type = value,
-                      activeColor: Colors.green,
-                    ),
-                  ),
-                ],
+                  //toggle value of the the user type
+                  onChanged: (value) => _state.type = value,
+                  activeColor: Colors.green,
+                ),
               ),
               const SizedBox(height: 20),
               Container(
@@ -208,12 +200,12 @@ class RegisterBody extends StatelessWidget {
                     onPressed: () async {
                       if (_key.currentState!.validate()) {
                         dynamic result = await _auth.createAccount(
-                            icController.text,
-                            nameController.text,
-                            phonenoController.text,
-                            emailController.text,
-                            passwordController.text,
-                            _state.type);
+                            _state.nameController.text,
+                            _state.icController.text,
+                            _state.phonenoController.text,
+                            _state.emailController.text,
+                            _state.passwordController.text,
+                            EnumToString.convertToString(_state.type));
 
                         if (result == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -228,11 +220,11 @@ class RegisterBody extends StatelessWidget {
                                 content: Text(
                                     'Account Registered! Login to continue')),
                           );
-                          icController.clear();
-                          nameController.clear();
-                          phonenoController.clear();
-                          emailController.clear();
-                          passwordController.clear();
+                          _state.icController.clear();
+                          _state.nameController.clear();
+                          _state.phonenoController.clear();
+                          _state.emailController.clear();
+                          _state.passwordController.clear();
                           Navigator.pushReplacementNamed(context, '/login');
                         }
                       }

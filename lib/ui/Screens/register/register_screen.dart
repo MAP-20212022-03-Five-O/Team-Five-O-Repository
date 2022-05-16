@@ -14,6 +14,12 @@ class RegisterPageState extends State<RegisterPage> {
   //by default check owner
   accountType _type = accountType.owner;
 
+  TextEditingController icController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phonenoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   //set value of the user type
   set type(value) => setState(() => _type = value);
 

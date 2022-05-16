@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 //User model
 class User {
-  final String ic, name, phoneno, email, uid, userType;
+  final String name, ic, phoneno, email, uid, userType;
 
   User(
-      {required this.ic,
-      required this.name,
+      {required this.name,
+      required this.ic,
       required this.phoneno,
       required this.email,
       required this.uid,
@@ -30,6 +30,7 @@ class User {
       'ic': ic,
       'phoneno': phoneno,
       'email': email,
+      'userType': userType
     };
   }
 }

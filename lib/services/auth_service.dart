@@ -13,8 +13,8 @@ class authService {
           email: email, password: password);
       auth.User? user = result.user;
       await DatabaseManager().storeUserDetails(User(
-          ic: ic,
           name: name,
+          ic: ic,
           phoneno: phoneno,
           email: email,
           uid: user!.uid,
