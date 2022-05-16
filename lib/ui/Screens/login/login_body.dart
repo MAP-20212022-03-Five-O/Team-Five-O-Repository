@@ -86,7 +86,24 @@ GestureDetector loginBody(BuildContext context) {
                       style: raisedButtonStyle,
                       child: const Text('Login'),
                       onPressed: () async {
-                        if (_key.currentState!.validate()) {}
+                        if (_key.currentState!.validate()) {
+                          dynamic result = await _auth.login(
+                              emailController.text, passwordController.text);
+                          if (result == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Incorrect Email or Password!')),
+                            );
+                          } else {
+                            print(result.toString());
+                            emailController.clear();
+                            passwordController.clear();
+
+                            Navigator.pushReplacementNamed(
+                                context, '/renterdashboard');
+                          }
+                        }
                       })),
               Row(
                 children: <Widget>[

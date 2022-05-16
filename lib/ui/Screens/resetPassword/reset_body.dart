@@ -1,4 +1,5 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:five_o_car_rental/ui/app_bar.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
@@ -69,33 +70,33 @@ GestureDetector resetBody(BuildContext context) {
                         child: const Text('Reset Password'),
                         onPressed: () async {
                           if (_key.currentState!.validate()) {
-                            // try {
-                            //   await FirebaseAuth.instance
-                            //       .sendPasswordResetEmail(
-                            //           email: emailController.text);
-                            //   emailController.clear();
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     SnackBar(
-                            //         content: Text(
-                            //             'Confirmation Email has been sent')),
-                            //   );
-                            //   Navigator.pop(context);
-                            // } on FirebaseAuthException catch (e) {
-                            //   if (e.code == 'user-not-found') {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       SnackBar(
-                            //           content: Text(
-                            //               'There is no account registered under this email')),
-                            //     );
-                            //   } else if (e.code == 'invalid-email') {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       SnackBar(
-                            //           content: Text('Invalid Email Input')),
-                            //     );
-                            //   } else {
-                            //     return null;
-                            //   }
-                            // }
+                            try {
+                              await FirebaseAuth.instance
+                                  .sendPasswordResetEmail(
+                                      email: emailController.text);
+                              emailController.clear();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Confirmation Email has been sent')),
+                              );
+                              Navigator.pushReplacementNamed(context, '/login');
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'There is no account registered under this email')),
+                                );
+                              } else if (e.code == 'invalid-email') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Invalid Email Input')),
+                                );
+                              } else {
+                                return null;
+                              }
+                            }
                           }
                         })),
               ],
