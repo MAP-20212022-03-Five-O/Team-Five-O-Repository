@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:five_o_car_rental/ui/Screens/login/button_style.dart';
+import '../../../Services/auth_service.dart';
 import 'app_bar.dart';
 
 final _key = GlobalKey<FormState>();
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 FocusNode myFocusNode = FocusNode();
+final authService _auth = authService();
 
 GestureDetector loginBody(BuildContext context) {
   return GestureDetector(
@@ -85,7 +87,22 @@ GestureDetector loginBody(BuildContext context) {
                       child: const Text('Login'),
                       onPressed: () async {
                         if (_key.currentState!.validate()) {
-                          Navigator.pushReplacementNamed(context, '/dashboard');
+                          dynamic result = await _auth.login(
+                              emailController.text, passwordController.text);
+                          if (result == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Incorrect Email or Password!')),
+                            );
+                          } else {
+                            print(result.toString());
+                            emailController.clear();
+                            passwordController.clear();
+
+                            Navigator.pushReplacementNamed(
+                                context, '/renterdashboard');
+                          }
                         }
                       })),
               Row(
