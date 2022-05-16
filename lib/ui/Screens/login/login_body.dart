@@ -1,11 +1,13 @@
+import 'package:five_o_car_rental/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:five_o_car_rental/ui/Screens/login/button_style.dart';
-import 'app_bar.dart';
+import 'package:five_o_car_rental/ui/button_style.dart';
+import '../../app_bar.dart';
 
 final _key = GlobalKey<FormState>();
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 FocusNode myFocusNode = FocusNode();
+final authService _auth = authService();
 
 GestureDetector loginBody(BuildContext context) {
   return GestureDetector(
@@ -84,9 +86,7 @@ GestureDetector loginBody(BuildContext context) {
                       style: raisedButtonStyle,
                       child: const Text('Login'),
                       onPressed: () async {
-                        if (_key.currentState!.validate()) {
-                          Navigator.pushReplacementNamed(context, '/dashboard');
-                        }
+                        if (_key.currentState!.validate()) {}
                       })),
               Row(
                 children: <Widget>[
@@ -97,7 +97,7 @@ GestureDetector loginBody(BuildContext context) {
                       style: TextStyle(fontSize: 15),
                     ),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/dashboard');
+                      Navigator.pushReplacementNamed(context, '/reset');
                     },
                   )
                 ],
@@ -115,7 +115,7 @@ GestureDetector loginBody(BuildContext context) {
                       style: TextStyle(fontSize: 15),
                     ),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/dashboard');
+                      Navigator.pushReplacementNamed(context, '/register');
                     },
                   )
                 ],
