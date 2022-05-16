@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'register_body.dart';
 
+enum accountType { owner, renter }
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterPage> createState() => RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class RegisterPageState extends State<RegisterPage> {
+  //by default check owner
+  accountType _type = accountType.owner;
+
+  //set value of the user type
+  set type(value) => setState(() => _type = value);
+
+  get type => _type;
+
   @override
   Widget build(BuildContext context) {
-    return registerBody(context);
+    return Scaffold(body: RegisterBody(this));
   }
 }

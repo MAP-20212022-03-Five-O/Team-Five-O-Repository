@@ -7,18 +7,18 @@ class authService {
 
   //registration
   Future createAccount(String name, String ic, String phoneno, String email,
-      String password) async {
+      String password, String userType) async {
     try {
       auth.UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       auth.User? user = result.user;
       await DatabaseManager().storeUserDetails(User(
-        ic: ic,
-        name: name,
-        phoneno: phoneno,
-        email: email,
-        uid: user!.uid,
-      ));
+          ic: ic,
+          name: name,
+          phoneno: phoneno,
+          email: email,
+          uid: user!.uid,
+          userType: userType));
       return user;
     } catch (e) {
       print(e.toString());

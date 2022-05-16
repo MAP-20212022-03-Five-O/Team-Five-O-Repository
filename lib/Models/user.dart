@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 //User model
 class User {
-  final String ic, name, phoneno, email, uid;
+  final String ic, name, phoneno, email, uid, userType;
 
   User(
       {required this.ic,
       required this.name,
       required this.phoneno,
       required this.email,
-      required this.uid});
+      required this.uid,
+      required this.userType});
   //Data from firebase convert to class
   factory User.fromFirestore(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
@@ -18,6 +19,7 @@ class User {
         ic: data['ic'],
         phoneno: data['phoneno'],
         email: data['email'],
+        userType: data['userType'],
         uid: snapshot.id);
   }
 
