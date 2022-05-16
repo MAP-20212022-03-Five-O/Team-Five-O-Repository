@@ -38,4 +38,9 @@ class authService {
       print("Error: $e");
     }
   }
+
+  //logout
+  Future logout() async {
+    await auth.FirebaseAuth.instance.signOut();
+  }
 }

@@ -100,7 +100,7 @@ class LoginBody extends StatelessWidget {
                           passwordController.clear();
 
                           Navigator.pushReplacementNamed(
-                              context, '/renterdashboard');
+                              context, '/ownerdashboard');
                         }
                       }
                     })),
