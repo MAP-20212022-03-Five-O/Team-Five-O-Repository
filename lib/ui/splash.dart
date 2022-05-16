@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'app_bar.dart';
 import 'dart:async';
@@ -19,7 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
   //function navigate login
   navigatetologin() async {
     await Future.delayed(const Duration(milliseconds: 2500), () {});
-    Navigator.pushReplacementNamed(context, '/login');
+    if (FirebaseAuth.instance.currentUser == null) {
+      Navigator.pushReplacementNamed(context, '/login');
+    } else if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.pushReplacementNamed(context, '/renterdashboard');
+    }
   }
 
   @override
