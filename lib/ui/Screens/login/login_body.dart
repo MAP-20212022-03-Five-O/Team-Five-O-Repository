@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
+import 'package:map_mvvm/map_mvvm.dart';
 import '../../../Services/auth_service.dart';
+import '../../../viewmodel/login_viewmodel.dart';
 import '../../app_bar.dart';
 
-class LoginBody extends StatelessWidget {
+class LoginBody extends StatefulWidget {
+  @override
+  State<LoginBody> createState() => _LoginBodyState();
+}
+
+class _LoginBodyState extends State<LoginBody> {
   final _key = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
   FocusNode myFocusNode = FocusNode();
-  final authService _auth = authService();
+
+  String? email;
+
+  String? password;
+
+  Future<void Function()?> _onSignIn(
+      BuildContext context, LoginViewModel viewmodel) async {
+    try {
+      await viewmodel.signIn(email, password);
+      viewmodel.navigator(context);
+    } on Failure catch (f) {
+      final snackbar = SnackBar(
+        content: Text(f.message ?? 'Error'),
+        backgroundColor: Colors.red,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -33,7 +58,7 @@ class LoginBody extends StatelessWidget {
                     return null;
                   }
                 },
-                controller: emailController,
+                onSaved: (newValue) => email = newValue,
                 onChanged: (value) {},
                 decoration: InputDecoration(
                     focusedBorder: const OutlineInputBorder(
@@ -59,7 +84,7 @@ class LoginBody extends StatelessWidget {
                     return null;
                   }
                 },
-                controller: passwordController,
+                onSaved: (newValue) => password = newValue,
                 onChanged: (value) {},
                 obscureText: true,
                 decoration: InputDecoration(
@@ -82,28 +107,17 @@ class LoginBody extends StatelessWidget {
             Container(
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                child: ElevatedButton(
-                    style: raisedButtonStyle,
-                    child: const Text('Login'),
-                    onPressed: () async {
-                      if (_key.currentState!.validate()) {
-                        dynamic result = await _auth.login(
-                            emailController.text, passwordController.text);
-                        if (result == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Incorrect Email or Password!')),
-                          );
-                        } else {
-                          print(result.toString());
-                          emailController.clear();
-                          passwordController.clear();
-
-                          Navigator.pushReplacementNamed(
-                              context, '/ownerdashboard');
+                child: View<LoginViewModel>(builder: (_, viewmodel) {
+                  return ElevatedButton(
+                      style: raisedButtonStyle,
+                      child: const Text('Login'),
+                      onPressed: () async {
+                        if (_key.currentState!.validate()) {
+                          _key.currentState!.save();
+                          _onSignIn(context, viewmodel);
                         }
-                      }
-                    })),
+                      });
+                })),
             Row(
               children: <Widget>[
                 TextButton(

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:five_o_car_rental/app/routes.dart';
 import 'package:flutter/material.dart';
 import 'app_bar.dart';
 import 'dart:async';
@@ -8,6 +9,8 @@ class SplashScreen extends StatefulWidget {
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
+  static Route route() =>
+      MaterialPageRoute(builder: (_) => const SplashScreen());
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -21,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   navigatetologin() async {
     await Future.delayed(const Duration(milliseconds: 2500), () {});
     if (FirebaseAuth.instance.currentUser == null) {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, Routes.login);
     } else if (FirebaseAuth.instance.currentUser != null) {
       Navigator.pushReplacementNamed(context, '/renterdashboard');
     }

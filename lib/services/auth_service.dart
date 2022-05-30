@@ -1,11 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:five_o_car_rental/services/auth_service_abstract.dart';
+import 'package:map_mvvm/map_mvvm.dart';
 import 'database_manager.dart';
 import '../Models/user.dart';
 
-class authService {
+// ignore: camel_case_types
+class authService extends AuthServiceAbstract {
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
+  final firebaseFirestore = FirebaseFirestore.instance;
+
   //registration
+  @override
   Future createAccount(String name, String ic, String phoneno, String email,
       String password, String userType) async {
     try {
@@ -26,12 +33,20 @@ class authService {
   }
 
   //login
-  Future login(String _email, String _password) async {
+  @override
+  Future<User?> login(String _email, String _password) async {
+    User user;
     try {
+      // auth.UserCredential userCredential = await _auth
+      //     .signInWithEmailAndPassword(email: _email, password: _password);
+      // print(userCredential);
       auth.UserCredential userCredential = await _auth
           .signInWithEmailAndPassword(email: _email, password: _password);
-      auth.User? user = userCredential.user;
-      return user;
+      var userID = userCredential.user!.uid;
+      print(userID);
+      //  auth.User? user = userCredential.user;
+      var doc = await firebaseFirestore.collection("user").doc(userID).get();
+      return User.fromJson(doc.data()!, userID);
     } on auth.FirebaseAuthException catch (e) {
       print("Error: $e");
     } catch (e) {

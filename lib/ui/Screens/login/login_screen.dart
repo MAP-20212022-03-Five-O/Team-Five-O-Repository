@@ -6,6 +6,7 @@ class LoginPage extends StatefulWidget {
 
   @override
   State<LoginPage> createState() => _LoginPageState();
+  static Route route() => MaterialPageRoute(builder: (_) => const LoginPage());
 }
 
 //login screen

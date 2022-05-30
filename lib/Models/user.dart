@@ -23,6 +23,13 @@ class User {
         uid: snapshot.id);
   }
 
+  User.fromJson(Map<String, dynamic> map, this.uid)
+      : name = map['name'],
+        ic = map['ic'],
+        phoneno = map['phoneno'],
+        email = map['email'],
+        userType = map['userType'];
+
   //Convert to json
   Map<String, dynamic> toMap() {
     return {

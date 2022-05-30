@@ -9,6 +9,8 @@ class RenterDashboard extends StatefulWidget {
 
   @override
   State<RenterDashboard> createState() => _RenterDashboardState();
+  static Route route() =>
+      MaterialPageRoute(builder: (_) => const RenterDashboard());
 }
 
 class _RenterDashboardState extends State<RenterDashboard> {

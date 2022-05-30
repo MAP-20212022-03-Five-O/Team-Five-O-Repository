@@ -9,6 +9,8 @@ class OwnerDashboard extends StatefulWidget {
 
   @override
   State<OwnerDashboard> createState() => _OwnerDashboardState();
+  static Route route() =>
+      MaterialPageRoute(builder: (_) => const OwnerDashboard());
 }
 
 class _OwnerDashboardState extends State<OwnerDashboard> {
