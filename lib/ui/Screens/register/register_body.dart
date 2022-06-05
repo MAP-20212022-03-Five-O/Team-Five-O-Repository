@@ -1,8 +1,11 @@
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:five_o_car_rental/app/routes.dart';
+import 'package:five_o_car_rental/viewmodel/register_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:five_o_car_rental/ui/app_bar.dart';
+import 'package:map_mvvm/map_mvvm.dart';
 import 'register_screen.dart';
 
 import '../../../Services/auth_service.dart';
@@ -15,6 +18,31 @@ class RegisterBody extends StatelessWidget {
 
   FocusNode myFocusNode = FocusNode();
   final authService _auth = authService();
+
+  String? name;
+  String? ic;
+  String? phoneno;
+  String? email;
+  String? password;
+  String? userType;
+
+  Future _onSignUp(BuildContext context, RegisterViewModel viewmodel) async {
+    // Navigator.popAndPushNamed(context, Routes.login);
+    userType = EnumToString.convertToString(_state.type);
+    String? result =
+        await viewmodel.signup(name, ic, phoneno, email, password, userType);
+    //print(result);
+    if (result == null) {
+      Navigator.popAndPushNamed(context, Routes.login);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Account Registered!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +68,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: _state.nameController,
+                  onSaved: (newValue) => name = newValue,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -71,7 +99,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: _state.icController,
+                  onSaved: (newValue) => ic = newValue,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -100,7 +128,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: _state.phonenoController,
+                  onSaved: (newValue) => phoneno = newValue,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -125,7 +153,7 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     }
                   },
-                  controller: _state.emailController,
+                  onSaved: (newValue) => email = newValue,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -153,7 +181,7 @@ class RegisterBody extends StatelessWidget {
                     }
                   },
                   obscureText: true,
-                  controller: _state.passwordController,
+                  onSaved: (newValue) => password = newValue,
                   decoration: InputDecoration(
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
@@ -194,42 +222,47 @@ class RegisterBody extends StatelessWidget {
               Container(
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                  child: ElevatedButton(
-                    style: raisedButtonStyle,
-                    child: const Text('Register'),
-                    onPressed: () async {
-                      if (_key.currentState!.validate()) {
-                        dynamic result = await _auth.createAccount(
-                            _state.nameController.text,
-                            _state.icController.text,
-                            _state.phonenoController.text,
-                            _state.emailController.text,
-                            _state.passwordController.text,
-                            EnumToString.convertToString(_state.type));
+                  child: View<RegisterViewModel>(builder: (_, viewmodel) {
+                    return ElevatedButton(
+                      style: raisedButtonStyle,
+                      child: const Text('Register'),
+                      onPressed: () async {
+                        if (_key.currentState!.validate()) {
+                          _key.currentState!.save();
+                          _onSignUp(context, viewmodel);
 
-                        if (result == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'Invalid Email Address, Please Use Another Email!')),
-                          );
-                        } else {
-                          print(result.toString());
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'Account Registered! Login to continue')),
-                          );
-                          _state.icController.clear();
-                          _state.nameController.clear();
-                          _state.phonenoController.clear();
-                          _state.emailController.clear();
-                          _state.passwordController.clear();
-                          Navigator.pushReplacementNamed(context, '/login');
+                          // dynamic result = await _auth.createAccount(
+                          //     _state.nameController.text,
+                          //     _state.icController.text,
+                          //     _state.phonenoController.text,
+                          //     _state.emailController.text,
+                          //     _state.passwordController.text,
+                          //     EnumToString.convertToString(_state.type));
+
+                          // if (result == null) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //         content: Text(
+                          //             'Invalid Email Address, Please Use Another Email!')),
+                          //   );
+                          // } else {
+                          //   print(result.toString());
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //         content: Text(
+                          //             'Account Registered! Login to continue')),
+                          //   );
+                          //   _state.icController.clear();
+                          //   _state.nameController.clear();
+                          //   _state.phonenoController.clear();
+                          //   _state.emailController.clear();
+                          //   _state.passwordController.clear();
+                          //   Navigator.pushReplacementNamed(context, '/login');
+                          // }
                         }
-                      }
-                    },
-                  )),
+                      },
+                    );
+                  })),
               Row(
                 children: <Widget>[
                   const Text('Have an account?'),
