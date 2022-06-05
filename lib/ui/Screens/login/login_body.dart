@@ -21,15 +21,13 @@ class _LoginBodyState extends State<LoginBody> {
 
   Future<void Function()?> _onSignIn(
       BuildContext context, LoginViewModel viewmodel) async {
-    try {
-      await viewmodel.signIn(email, password);
-      viewmodel.navigator(context);
-    } on Failure catch (f) {
-      final snackbar = SnackBar(
-        content: Text(f.message ?? 'Error'),
-        backgroundColor: Colors.red,
+    await viewmodel.signIn(email, password);
+    viewmodel.navigator(context);
+    dynamic result = await viewmodel.signIn(email, password);
+    if (result == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Incorrect Email or Password!')),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
     return null;
   }

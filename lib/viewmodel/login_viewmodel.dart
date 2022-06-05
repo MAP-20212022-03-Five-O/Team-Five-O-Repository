@@ -1,13 +1,10 @@
 import 'dart:async';
 
-import 'package:five_o_car_rental/services/auth_service.dart';
 import 'package:five_o_car_rental/services/auth_service_abstract.dart';
 import 'package:flutter/material.dart';
 import 'package:map_mvvm/map_mvvm.dart';
-import 'package:provider/provider.dart';
 
 import '../Models/user.dart';
-import '../Services/database_manager.dart';
 import '../app/routes.dart';
 import '../app/service_locator.dart';
 
@@ -25,7 +22,7 @@ class LoginViewModel extends Viewmodel {
     notifyListenersOnFailure = false;
   }
 
-  Future<void> signIn(email, password) async => await update(() async {
+  Future signIn(email, password) async => await update(() async {
         try {
           currUser = await auth.login(email, password);
         } on Failure {

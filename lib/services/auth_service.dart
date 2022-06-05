@@ -35,7 +35,6 @@ class authService extends AuthServiceAbstract {
   //login
   @override
   Future<User?> login(String _email, String _password) async {
-    User user;
     try {
       // auth.UserCredential userCredential = await _auth
       //     .signInWithEmailAndPassword(email: _email, password: _password);
@@ -52,6 +51,7 @@ class authService extends AuthServiceAbstract {
     } catch (e) {
       print("Error: $e");
     }
+    return null;
   }
 
   //logout
