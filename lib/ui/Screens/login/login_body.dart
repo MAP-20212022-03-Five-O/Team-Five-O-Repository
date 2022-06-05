@@ -144,7 +144,7 @@ class _LoginBodyState extends State<LoginBody> {
                     style: TextStyle(fontSize: 15),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/register');
+                    Navigator.popAndPushNamed(context, Routes.register);
                   },
                 )
               ],

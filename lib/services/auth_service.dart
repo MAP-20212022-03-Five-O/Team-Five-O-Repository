@@ -13,8 +13,8 @@ class authService extends AuthServiceAbstract {
 
   //registration
   @override
-  Future createAccount(String name, String ic, String phoneno, String email,
-      String password, String userType) async {
+  Future<String?> createAccount(String name, String ic, String phoneno,
+      String email, String password, String userType) async {
     try {
       auth.UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -26,10 +26,10 @@ class authService extends AuthServiceAbstract {
           email: email,
           uid: user!.uid,
           userType: userType));
-      return user;
-    } catch (e) {
-      print(e.toString());
+    } on auth.FirebaseAuthException catch (e) {
+      return e.code;
     }
+    return null;
   }
 
   //login
@@ -61,12 +61,11 @@ class authService extends AuthServiceAbstract {
 
   //reset password
   @override
-  Future<String> resetPassword(String email) async {
+  Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on auth.FirebaseAuthException catch (e) {
       print('Error: $e');
     }
-    return email;
   }
 }

@@ -8,6 +8,8 @@ class RegisterPage extends StatefulWidget {
 
   @override
   State<RegisterPage> createState() => RegisterPageState();
+  static Route route() =>
+      MaterialPageRoute(builder: (_) => const RegisterPage());
 }
 
 class RegisterPageState extends State<RegisterPage> {
