@@ -58,4 +58,15 @@ class authService extends AuthServiceAbstract {
   Future logout() async {
     await auth.FirebaseAuth.instance.signOut();
   }
+
+  //reset password
+  @override
+  Future<String> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on auth.FirebaseAuthException catch (e) {
+      print('Error: $e');
+    }
+    return email;
+  }
 }

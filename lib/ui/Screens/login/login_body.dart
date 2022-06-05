@@ -1,3 +1,4 @@
+import 'package:five_o_car_rental/app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:map_mvvm/map_mvvm.dart';
@@ -125,7 +126,7 @@ class _LoginBodyState extends State<LoginBody> {
                     style: TextStyle(fontSize: 15),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/reset');
+                    Navigator.popAndPushNamed(context, Routes.resetpwd);
                   },
                 )
               ],

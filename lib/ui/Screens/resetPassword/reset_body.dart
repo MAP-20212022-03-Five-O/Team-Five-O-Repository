@@ -1,13 +1,29 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:five_o_car_rental/viewmodel/resetpwd_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:five_o_car_rental/ui/app_bar.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
+import 'package:map_mvvm/map_mvvm.dart';
+
+import '../../../app/routes.dart';
 
 GestureDetector resetBody(BuildContext context) {
   final _key = GlobalKey<FormState>();
-
-  TextEditingController emailController = TextEditingController();
+  String? email;
+  Future _onReset(
+      BuildContext context, ResetPasswordViewModel viewmodel) async {
+    // Navigator.popAndPushNamed(context, Routes.login);
+    bool result = await viewmodel.resetPassword(email);
+    print(result);
+    if (!result) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Incorrect Email or Password!')),
+      );
+    } else {
+      Navigator.popAndPushNamed(context, Routes.login);
+    }
+  }
 
   return GestureDetector(
     onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -52,7 +68,7 @@ GestureDetector resetBody(BuildContext context) {
                         return null;
                       }
                     },
-                    controller: emailController,
+                    onSaved: (newValue) => email = newValue,
                     decoration: InputDecoration(
                         hintText: 'Email',
                         border: OutlineInputBorder(
@@ -65,40 +81,18 @@ GestureDetector resetBody(BuildContext context) {
                 Container(
                     height: 50,
                     padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                    child: ElevatedButton(
-                        style: raisedButtonStyle,
-                        child: const Text('Reset Password'),
-                        onPressed: () async {
-                          if (_key.currentState!.validate()) {
-                            try {
-                              await FirebaseAuth.instance
-                                  .sendPasswordResetEmail(
-                                      email: emailController.text);
-                              emailController.clear();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Confirmation Email has been sent')),
-                              );
-                              Navigator.pushReplacementNamed(context, '/login');
-                            } on FirebaseAuthException catch (e) {
-                              if (e.code == 'user-not-found') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'There is no account registered under this email')),
-                                );
-                              } else if (e.code == 'invalid-email') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Invalid Email Input')),
-                                );
-                              } else {
-                                return null;
-                              }
+                    child:
+                        View<ResetPasswordViewModel>(builder: (_, viewmodel) {
+                      return ElevatedButton(
+                          style: raisedButtonStyle,
+                          child: const Text('Reset Password'),
+                          onPressed: () async {
+                            if (_key.currentState!.validate()) {
+                              _key.currentState!.save();
+                              _onReset(context, viewmodel);
                             }
-                          }
-                        })),
+                          });
+                    })),
               ],
             ))),
   );
