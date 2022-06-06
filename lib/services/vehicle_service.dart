@@ -16,14 +16,15 @@ class VehicleService extends VehicleServiceAbstract {
       String carType, int manYear, double price) async {
     try {
       String userid = _auth.currentUser!.uid;
-      await DatabaseManager().storeVehicleDetails(Vehicle(
-          plateNo: plateNo,
-          brand: brand,
-          capacity: capacity,
-          carType: carType,
-          manYear: manYear,
-          price: price,
-          userid: userid));
+      await vehicles.doc().set(Vehicle(
+              plateNo: plateNo,
+              brand: brand,
+              capacity: capacity,
+              carType: carType,
+              manYear: manYear,
+              price: price,
+              userid: userid)
+          .toMap());
     } catch (e) {
       return false;
     }
@@ -41,13 +42,13 @@ class VehicleService extends VehicleServiceAbstract {
   Stream<Vehicle> getVehicleDetails(String id) =>
       vehicles.doc(id).snapshots().map((event) => Vehicle.fromFirestore(event));
 
+//update vehicle details
   @override
   Future<bool> updateVehicle(String plateNo, String brand, String capacity,
       String carType, int manYear, double price, String vid) async {
     try {
       String userid = _auth.currentUser!.uid;
-      await DatabaseManager().updateVehicleDetails(
-          Vehicle(
+      await vehicles.doc(vid).update(Vehicle(
             plateNo: plateNo,
             brand: brand,
             capacity: capacity,
@@ -55,8 +56,17 @@ class VehicleService extends VehicleServiceAbstract {
             manYear: manYear,
             price: price,
             userid: userid,
-          ),
-          vid);
+          ).toMap());
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  Future<bool> deleteVehicle(String vid) async {
+    try {
+      await vehicles.doc(vid).delete();
     } catch (e) {
       return false;
     }

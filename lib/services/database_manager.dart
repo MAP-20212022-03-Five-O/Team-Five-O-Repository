@@ -12,11 +12,6 @@ class DatabaseManager {
   final CollectionReference vehicles =
       FirebaseFirestore.instance.collection('vehicle');
 
-  // Store user details
-  Future<void> storeUserDetails(User user) async {
-    return await users.doc(user.uid).set(user.toMap());
-  }
-
   //fetch data from firebase
   Stream<User>? get user {
     String userID = _auth.currentUser!.uid;
@@ -25,21 +20,4 @@ class DatabaseManager {
         .snapshots()
         .map((event) => User.fromFirestore(event));
   }
-
-// add vehicle to firebase
-  Future<void> storeVehicleDetails(Vehicle vehicle) async {
-    return await vehicles.doc().set(vehicle.toMap());
-  }
-
-//update vehicle details
-  Future<void> updateVehicleDetails(Vehicle vehicle, String vid) async {
-    return await vehicles.doc(vid).update(vehicle.toMap());
-  }
-
-//   String vehicleID = _auth.currentUser!.uid;
-  //   return vehicles
-  //       .doc(vehicleID)
-  //       .snapshots()
-  //       .map((event) => Vehicle.fromFirestore(event));
-  // }
 }

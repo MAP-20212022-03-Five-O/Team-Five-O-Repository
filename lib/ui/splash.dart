@@ -1,5 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:five_o_car_rental/app/routes.dart';
+import 'package:five_o_car_rental/app/service_locator.dart';
+import 'package:five_o_car_rental/services/auth_service_abstract.dart';
 import 'package:flutter/material.dart';
 import 'app_bar.dart';
 import 'dart:async';
@@ -14,6 +16,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  AuthServiceAbstract get _auth => locator<AuthServiceAbstract>();
   @override
   void initState() {
     super.initState();
@@ -23,10 +26,17 @@ class _SplashScreenState extends State<SplashScreen> {
   //function navigate login
   navigatetologin() async {
     await Future.delayed(const Duration(milliseconds: 2500), () {});
-    if (FirebaseAuth.instance.currentUser == null) {
+    auth.User? user = auth.FirebaseAuth.instance.currentUser;
+    if (user == null) {
       Navigator.pushReplacementNamed(context, Routes.login);
-    } else if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.pushReplacementNamed(context, '/renterdashboard');
+    } else {
+      _auth.getUserByID(user.uid).then((value) {
+        if (value!.userType == "owner") {
+          Navigator.popAndPushNamed(context, Routes.ownerHome);
+        } else {
+          Navigator.popAndPushNamed(context, Routes.renterHome);
+        }
+      });
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:five_o_car_rental/app/app.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:flutter/material.dart';
+import 'package:map_mvvm/map_mvvm.dart';
 
 import '../../../viewmodel/vehicle_viewmodel.dart';
 
@@ -20,6 +21,23 @@ late final VehicleViewModel _vehicleViewModel = locator.get<VehicleViewModel>();
 late final BuildContext _context;
 
 class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
+  String? vid;
+
+  Future _onDeleteCar(BuildContext context, VehicleViewModel viewmodel) async {
+    bool result = await viewmodel.deleteVehicle(vid);
+    //print(result);
+    if (result == true) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Car Succesfully Deleted!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Unsuccessful')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -238,13 +256,23 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                         height: 50,
                                         padding: const EdgeInsets.fromLTRB(
                                             6, 0, 6, 0),
-                                        child: ElevatedButton(
-                                          style: raisedButtonStyle,
-                                          child: const Text('Delete Car'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        )),
+                                        child: View<VehicleViewModel>(
+                                            builder: (_, viewmodel) {
+                                          return ElevatedButton(
+                                            style: raisedButtonStyle,
+                                            child: const Text('Delete Car'),
+                                            onPressed: () {
+                                              vid = widget.id;
+                                              showAlertDialog(context)
+                                                  .then((value) {
+                                                if (value) {
+                                                  _onDeleteCar(
+                                                      context, viewmodel);
+                                                }
+                                              });
+                                            },
+                                          );
+                                        })),
                                   ],
                                 ),
                               ],
@@ -258,6 +286,40 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
               ],
             )),
       ),
+    );
+  }
+
+  Future<dynamic> showAlertDialog(BuildContext context) async {
+    // set up the buttons
+    Widget yesButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.pop(context, true);
+      },
+    );
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context, false);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete Car"),
+      content: Text("Are you sure to delete this car?"),
+      actions: [
+        yesButton,
+        cancelButton,
+      ],
+    );
+
+    // show the dialog
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

@@ -6,4 +6,5 @@ abstract class AuthServiceAbstract with ServiceStream {
       String email, String password, String userType);
   Future<User?> login(String _email, String _password);
   Future<void> resetPassword(String email);
+  Future<User?> getUserByID(String id);
 }

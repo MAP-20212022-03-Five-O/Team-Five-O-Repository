@@ -49,4 +49,10 @@ class VehicleViewModel extends Viewmodel {
         plateNo, brand, capacity, carType, manYear, price, vid);
     return status;
   }
+
+  // delete vehicle
+  Future<bool> deleteVehicle(vid) async {
+    bool status = await service.deleteVehicle(vid);
+    return status;
+  }
 }

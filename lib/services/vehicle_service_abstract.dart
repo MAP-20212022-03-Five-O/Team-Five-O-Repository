@@ -10,4 +10,5 @@ abstract class VehicleServiceAbstract with ServiceStream {
   Stream<Vehicle> getVehicleDetails(String id);
   Future<bool> updateVehicle(String plateNo, String brand, String capacity,
       String carType, int manYear, double price, String vid);
+  Future<bool> deleteVehicle(String vid);
 }

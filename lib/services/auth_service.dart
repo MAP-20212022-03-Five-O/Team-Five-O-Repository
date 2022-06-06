@@ -10,7 +10,7 @@ class authService extends AuthServiceAbstract {
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
   final firebaseFirestore = FirebaseFirestore.instance;
-
+  CollectionReference users = FirebaseFirestore.instance.collection("user");
   //registration
   @override
   Future<String?> createAccount(String name, String ic, String phoneno,
@@ -19,13 +19,14 @@ class authService extends AuthServiceAbstract {
       auth.UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       auth.User? user = result.user;
-      await DatabaseManager().storeUserDetails(User(
-          name: name,
-          ic: ic,
-          phoneno: phoneno,
-          email: email,
-          uid: user!.uid,
-          userType: userType));
+      await users.doc(user!.uid).set(User(
+              name: name,
+              ic: ic,
+              phoneno: phoneno,
+              email: email,
+              uid: user.uid,
+              userType: userType)
+          .toMap());
     } on auth.FirebaseAuthException catch (e) {
       return e.code;
     }
@@ -67,5 +68,9 @@ class authService extends AuthServiceAbstract {
     } on auth.FirebaseAuthException catch (e) {
       print('Error: $e');
     }
+  }
+
+  Future<User?> getUserByID(String id) {
+    return users.doc(id).get().then((value) => User.fromFirestore(value));
   }
 }
