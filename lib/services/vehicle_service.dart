@@ -8,8 +8,9 @@ class VehicleService extends VehicleServiceAbstract {
   final CollectionReference vehicles =
       FirebaseFirestore.instance.collection('vehicle');
   auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
+  Vehicle vehicle = Vehicle();
 
-  //registration
+  //Add new Car
   @override
   Future<bool> addVehicle(String plateNo, String brand, String capacity,
       String carType, int manYear, double price) async {
@@ -23,6 +24,39 @@ class VehicleService extends VehicleServiceAbstract {
           manYear: manYear,
           price: price,
           userid: userid));
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  //retrieve vehicle list
+  @override
+  Stream<QuerySnapshot<Object?>> getOwnerVehicle(String userid) {
+    return vehicles.where('userid', isEqualTo: userid).snapshots();
+  }
+
+//retrieve vehicle details
+  @override
+  Stream<Vehicle> getVehicleDetails(String id) =>
+      vehicles.doc(id).snapshots().map((event) => Vehicle.fromFirestore(event));
+
+  @override
+  Future<bool> updateVehicle(String plateNo, String brand, String capacity,
+      String carType, int manYear, double price, String vid) async {
+    try {
+      String userid = _auth.currentUser!.uid;
+      await DatabaseManager().updateVehicleDetails(
+          Vehicle(
+            plateNo: plateNo,
+            brand: brand,
+            capacity: capacity,
+            carType: carType,
+            manYear: manYear,
+            price: price,
+            userid: userid,
+          ),
+          vid);
     } catch (e) {
       return false;
     }

@@ -1,7 +1,7 @@
 import 'package:five_o_car_rental/services/auth_service.dart';
 import 'package:five_o_car_rental/services/auth_service_abstract.dart';
 import 'package:five_o_car_rental/services/vehicle_service.dart';
-import 'package:five_o_car_rental/viewmodel/addvehicle_viewmodel.dart';
+import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:five_o_car_rental/viewmodel/login_viewmodel.dart';
 import 'package:five_o_car_rental/viewmodel/register_viewmodel.dart';
 import 'package:five_o_car_rental/viewmodel/resetpwd_viewmodel.dart';
@@ -39,6 +39,5 @@ Future<void> initializeServiceLocator() async {
   locator.registerLazySingleton<ResetPasswordViewModel>(
       () => ResetPasswordViewModel());
   locator.registerLazySingleton<RegisterViewModel>(() => RegisterViewModel());
-  locator
-      .registerLazySingleton<AddVehicleViewModel>(() => AddVehicleViewModel());
+  locator.registerLazySingleton<VehicleViewModel>(() => VehicleViewModel());
 }

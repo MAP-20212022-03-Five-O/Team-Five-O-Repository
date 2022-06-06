@@ -31,8 +31,12 @@ class DatabaseManager {
     return await vehicles.doc().set(vehicle.toMap());
   }
 
-  // Stream<Vehicle>? get vehicle {
-  //   String vehicleID = _auth.currentUser!.uid;
+//update vehicle details
+  Future<void> updateVehicleDetails(Vehicle vehicle, String vid) async {
+    return await vehicles.doc(vid).update(vehicle.toMap());
+  }
+
+//   String vehicleID = _auth.currentUser!.uid;
   //   return vehicles
   //       .doc(vehicleID)
   //       .snapshots()

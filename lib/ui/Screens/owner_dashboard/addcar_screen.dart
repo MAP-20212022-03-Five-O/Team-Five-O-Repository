@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:map_mvvm/map_mvvm.dart';
 import 'package:flutter/services.dart';
 
-import '../../../viewmodel/addvehicle_viewmodel.dart';
+import '../../../viewmodel/vehicle_viewmodel.dart';
 
 class AddCar extends StatefulWidget {
   const AddCar({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class _AddCarState extends State<AddCar> {
   int? manYear;
   double? price;
 
-  Future _onAddCar(BuildContext context, AddVehicleViewModel viewmodel) async {
+  Future _onAddCar(BuildContext context, VehicleViewModel viewmodel) async {
     bool result = await viewmodel.addVehicle(
         plateNo, brand, capacity, carType, manYear, price);
     //print(result);
@@ -61,10 +61,10 @@ class _AddCarState extends State<AddCar> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
-                      maxLength: 12,
+                      maxLength: 8,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "NRIC is empty";
+                          return "Plate Number is empty";
                         } else {
                           return null;
                         }
@@ -184,7 +184,7 @@ class _AddCarState extends State<AddCar> {
                   Container(
                       height: 50,
                       padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                      child: View<AddVehicleViewModel>(builder: (_, viewmodel) {
+                      child: View<VehicleViewModel>(builder: (_, viewmodel) {
                         return ElevatedButton(
                           style: raisedButtonStyle,
                           child: const Text('Submit'),

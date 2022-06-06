@@ -2,18 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Veehicle model
 class Vehicle {
-  final String plateNo, brand, capacity, carType, userid;
-  final int manYear;
-  final double price;
+  final String? plateNo, brand, capacity, carType, userid;
+  final int? manYear;
+  final double? price;
 
   Vehicle({
-    required this.plateNo,
-    required this.brand,
-    required this.capacity,
-    required this.carType,
-    required this.manYear,
-    required this.price,
-    required this.userid,
+    this.plateNo,
+    this.brand,
+    this.capacity,
+    this.carType,
+    this.manYear,
+    this.price,
+    this.userid,
   });
   //Data from firebase convert to class
   factory Vehicle.fromFirestore(DocumentSnapshot snapshot) {
