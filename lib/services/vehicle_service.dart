@@ -63,6 +63,7 @@ class VehicleService extends VehicleServiceAbstract {
     return true;
   }
 
+//delete vehicle
   @override
   Future<bool> deleteVehicle(String vid) async {
     try {

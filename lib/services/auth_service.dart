@@ -70,7 +70,33 @@ class authService extends AuthServiceAbstract {
     }
   }
 
+  @override
   Future<User?> getUserByID(String id) {
     return users.doc(id).get().then((value) => User.fromFirestore(value));
+  }
+
+  //get user details
+  @override
+  Stream<User> getUserDetails(String id) =>
+      users.doc(id).snapshots().map((event) => User.fromFirestore(event));
+
+  //update user details
+  @override
+  Future<bool> updateUserDetails(String name, String ic, String phoneno,
+      String email, String userType, String uid) async {
+    try {
+      String userid = _auth.currentUser!.uid;
+      await users.doc(userid).update(User(
+            name: name,
+            ic: ic,
+            phoneno: phoneno,
+            email: email,
+            userType: userType,
+            uid: userid,
+          ).toMap());
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 }

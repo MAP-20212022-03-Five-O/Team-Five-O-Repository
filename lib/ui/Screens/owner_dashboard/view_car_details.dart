@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:five_o_car_rental/app/app.dart';
+import 'package:five_o_car_rental/ui/Screens/owner_dashboard/home_appbar.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:flutter/material.dart';
 import 'package:map_mvvm/map_mvvm.dart';
@@ -41,24 +42,13 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar(),
       body: Container(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 150,
-                  width: 150,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.brown.shade800,
-                    child: const Text(
-                      'AH',
-                      style: TextStyle(fontSize: 50),
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 20),
                 RichText(
                   text: const TextSpan(
@@ -100,7 +90,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                             right: BorderSide(
                                                 width: 1.0,
                                                 color: Colors.blueGrey))),
-                                    child: const Icon(Icons.person,
+                                    child: const Icon(Icons.pin_outlined,
                                         color: Colors.blueGrey),
                                   ),
                                   title: const Text(
@@ -111,7 +101,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                   ),
                                   subtitle: Row(
                                     children: <Widget>[
-                                      const Icon(Icons.arrow_right,
+                                      const Icon(Icons.arrow_right_outlined,
                                           color: Colors.blueGrey),
                                       Text(vehicle.plateNo!,
                                           style: const TextStyle(
@@ -129,7 +119,8 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                             right: BorderSide(
                                                 width: 1.0,
                                                 color: Colors.blueGrey))),
-                                    child: const Icon(Icons.badge,
+                                    child: const Icon(
+                                        Icons.directions_car_outlined,
                                         color: Colors.blueGrey),
                                   ),
                                   title: const Text(
@@ -140,7 +131,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                   ),
                                   subtitle: Row(
                                     children: <Widget>[
-                                      const Icon(Icons.arrow_right,
+                                      const Icon(Icons.arrow_right_outlined,
                                           color: Colors.blueGrey),
                                       Text(vehicle.brand!,
                                           style: const TextStyle(
@@ -158,7 +149,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                             right: BorderSide(
                                                 width: 1.0,
                                                 color: Colors.blueGrey))),
-                                    child: const Icon(Icons.phone,
+                                    child: const Icon(Icons.groups_outlined,
                                         color: Colors.blueGrey),
                                   ),
                                   title: const Text(
@@ -169,7 +160,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                   ),
                                   subtitle: Row(
                                     children: <Widget>[
-                                      const Icon(Icons.arrow_right,
+                                      const Icon(Icons.arrow_right_outlined,
                                           color: Colors.blueGrey),
                                       Text(vehicle.capacity!,
                                           style: const TextStyle(
@@ -187,7 +178,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                             right: BorderSide(
                                                 width: 1.0,
                                                 color: Colors.blueGrey))),
-                                    child: const Icon(Icons.mail,
+                                    child: const Icon(Icons.date_range_outlined,
                                         color: Colors.blueGrey),
                                   ),
                                   title: const Text(
@@ -198,7 +189,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                   ),
                                   subtitle: Row(
                                     children: <Widget>[
-                                      const Icon(Icons.arrow_right,
+                                      const Icon(Icons.arrow_right_outlined,
                                           color: Colors.blueGrey),
                                       Text(vehicle.manYear.toString(),
                                           style: const TextStyle(
@@ -216,7 +207,8 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                             right: BorderSide(
                                                 width: 1.0,
                                                 color: Colors.blueGrey))),
-                                    child: const Icon(Icons.mail,
+                                    child: const Icon(
+                                        Icons.attach_money_outlined,
                                         color: Colors.blueGrey),
                                   ),
                                   title: const Text(
@@ -227,7 +219,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                   ),
                                   subtitle: Row(
                                     children: <Widget>[
-                                      const Icon(Icons.arrow_right,
+                                      const Icon(Icons.arrow_right_outlined,
                                           color: Colors.blueGrey),
                                       Text("RM${vehicle.price}",
                                           style: const TextStyle(

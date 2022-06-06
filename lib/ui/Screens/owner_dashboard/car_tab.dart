@@ -29,17 +29,24 @@ class _CarTabState extends State<CarTab> {
             if (snapshot.hasData) {
               final vehicle = snapshot.data!;
               return ListView(children: [
-                RichText(
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(
-                          text: 'My Car',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 28,
-                              fontWeight: FontWeight.w700)),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    RichText(
+                      text: const TextSpan(
+                        children: [
+                          TextSpan(
+                              text: 'My Car',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w700)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 50)
+                  ],
                 ),
                 ...vehicle.docs.map((vehicle) {
                   Vehicle v = Vehicle.fromFirestore(vehicle);
@@ -75,6 +82,7 @@ class _CarTabState extends State<CarTab> {
                         onPressed: () async {
                           Navigator.pushNamed(context, Routes.addcar);
                         })),
+                const SizedBox(height: 20)
               ]);
             } else {
               return const Center(child: CircularProgressIndicator());
