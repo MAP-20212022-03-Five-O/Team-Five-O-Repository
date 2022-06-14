@@ -8,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/services.dart';
 import 'package:map_mvvm/map_mvvm.dart';
 
+import 'components.dart';
+
 class UpdateUserProfile extends StatefulWidget {
   const UpdateUserProfile({Key? key}) : super(key: key);
 
@@ -67,12 +69,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                       key: _key,
                       child: ListView(
                         children: <Widget>[
-                          const SizedBox(
-                            //image here
-                            height: 100,
-                            width: 100,
-                            child: LogoAsset(),
-                          ),
+                          logoSizeBox(),
                           Container(
                             padding: const EdgeInsets.all(10),
                             child: TextFormField(
@@ -83,14 +80,9 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                   return null;
                                 }
                               },
-                              controller: nameController..text = '${user.name}',
+                              controller: nameController..text = user.name,
                               onSaved: (newValue) => name = newValue,
-                              decoration: const InputDecoration(
-                                counterText: '',
-                                hintText: 'Full Name',
-                                border: OutlineInputBorder(),
-                                labelText: 'Enter Full Name',
-                              ),
+                              decoration: nameDecoration(),
                             ),
                           ),
                           Container(
@@ -112,19 +104,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                               },
                               controller: icController..text = '${user.ic}',
                               onSaved: (newValue) => ic = newValue,
-                              decoration: InputDecoration(
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey)),
-                                  hintText: 'NRIC',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  labelText: 'IC Number',
-                                  labelStyle: TextStyle(
-                                      color: myFocusNode.hasFocus
-                                          ? Colors.black
-                                          : Colors.black)),
+                              decoration: icDecoration(),
                             ),
                           ),
                           Container(
@@ -145,19 +125,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                               controller: phonenoController
                                 ..text = '${user.phoneno}',
                               onSaved: (newValue) => phoneno = newValue,
-                              decoration: InputDecoration(
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey)),
-                                  hintText: 'Phoneno',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  labelText: 'Phone Number',
-                                  labelStyle: TextStyle(
-                                      color: myFocusNode.hasFocus
-                                          ? Colors.black
-                                          : Colors.black)),
+                              decoration: phonenoDecoration(),
                             ),
                           ),
                           Container(
@@ -174,19 +142,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                               controller: emailController
                                 ..text = '${user.email}',
                               onSaved: (newValue) => email = newValue,
-                              decoration: InputDecoration(
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey)),
-                                  hintText: 'Email',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  labelText: 'Email Address',
-                                  labelStyle: TextStyle(
-                                      color: myFocusNode.hasFocus
-                                          ? Colors.black
-                                          : Colors.black)),
+                              decoration: emailDecoration(),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -209,20 +165,11 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                 );
                               })),
                           const SizedBox(height: 10),
-                          Container(
-                              height: 50,
-                              padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                              child: ElevatedButton(
-                                style: raisedButtonStyle,
-                                child: const Text('Cancel'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              )),
+                          cancelButtonContainer(context),
                         ],
                       )));
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return circularProgressIndicator();
             }
           }),
     );
