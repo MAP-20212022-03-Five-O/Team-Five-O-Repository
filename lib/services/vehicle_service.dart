@@ -31,7 +31,7 @@ class VehicleService extends VehicleServiceAbstract {
     return true;
   }
 
-  //retrieve vehicle list
+  //retrieve owner vehicle list
   @override
   Stream<QuerySnapshot<Object?>> getOwnerVehicle(String userid) {
     return vehicles.where('userid', isEqualTo: userid).snapshots();
