@@ -26,6 +26,7 @@ class VehicleViewModel extends Viewmodel {
     notifyListenersOnFailure = false;
   }
 
+  // Add new vehicle
   Future<bool> addVehicle(
       plateNo, brand, capacity, carType, manYear, price) async {
     bool status = await service.addVehicle(

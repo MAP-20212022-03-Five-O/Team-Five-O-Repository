@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:map_mvvm/view.dart';
 
+import 'cartab_component.dart';
+
 class CarTab extends StatefulWidget {
   const CarTab({Key? key}) : super(key: key);
 
@@ -21,6 +23,22 @@ late final BuildContext _context;
 class _CarTabState extends State<CarTab> {
   @override
   Widget build(BuildContext context) {
+    String? vehicleid;
+
+    Future _onDeleteCar(BuildContext context, VehicleViewModel viewmodel,
+        String? vehicleid) async {
+      bool result = await viewmodel.deleteVehicle(vehicleid);
+      if (result == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Car Succesfully Deleted!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unsuccessful')),
+        );
+      }
+    }
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: StreamBuilder<QuerySnapshot>(
@@ -62,10 +80,15 @@ class _CarTabState extends State<CarTab> {
                             style: TextStyle(fontSize: 18),
                           ),
                           subtitle: Text('RM ${v.price}'),
-                          trailing: const Icon(
-                            Icons.chevron_right,
-                            size: 32,
-                            color: Color.fromRGBO(118, 43, 46, 1),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              UpdateIcon(context, vehicle),
+                              View<VehicleViewModel>(builder: (_, viewmodel) {
+                                return DeleteIconButton(vehicleid, vehicle,
+                                    context, _onDeleteCar, viewmodel);
+                              }),
+                            ],
                           ),
                           onTap: () => Navigator.pushNamed(
                               context, Routes.carDetails,
@@ -76,12 +99,7 @@ class _CarTabState extends State<CarTab> {
                 Container(
                     height: 50,
                     padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                    child: ElevatedButton(
-                        style: raisedButtonStyle,
-                        child: const Text('Add New Car'),
-                        onPressed: () async {
-                          Navigator.pushNamed(context, Routes.addcar);
-                        })),
+                    child: AddCarButton(context)),
                 const SizedBox(height: 20)
               ]);
             } else {

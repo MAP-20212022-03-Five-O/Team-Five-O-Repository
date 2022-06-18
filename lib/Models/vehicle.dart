@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//Veehicle model
+//Vehicle model
 class Vehicle {
   final String? plateNo, brand, capacity, carType, userid;
   final int? manYear;

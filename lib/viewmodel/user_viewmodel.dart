@@ -16,7 +16,7 @@ class UserViewModel extends Viewmodel {
     notifyListenersOnFailure = false;
   }
 
-  //retrieve user details
+  //retrieve user details and call service
   Stream<User> getUserDetails(String id) => auth.getUserDetails(id);
 
   //logout
