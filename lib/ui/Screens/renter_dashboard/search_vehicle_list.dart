@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/home_appbar.dart';
+import 'package:five_o_car_rental/ui/Screens/renter_dashboard/view_car_details.dart';
 import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -11,17 +12,28 @@ import '../../../app/routes.dart';
 import '../owner_dashboard/home_appbar.dart';
 
 class SearchVehicleList extends StatefulWidget {
-  const SearchVehicleList({
+  String carType, vehicleLoc;
+  DateTime startDate, endDate;
+  int duration;
+  SearchVehicleList({
     Key? key,
     required this.carType,
     required this.vehicleLoc,
+    required this.startDate,
+    required this.endDate,
+    required this.duration,
   }) : super(key: key);
-  final String carType, vehicleLoc;
-  static Route route(String carType, String vehicleLoc) => MaterialPageRoute(
-      builder: (_) => SearchVehicleList(
-            carType: carType,
-            vehicleLoc: vehicleLoc,
-          ));
+
+  // final String carType, vehicleLoc;
+  // static Route route(String carType, String vehicleLoc, DateTime startDate,
+  //         DateTime endDate) =>
+  //     MaterialPageRoute(
+  //         builder: (_) => SearchVehicleList(
+  //               carType: carType,
+  //               vehicleLoc: vehicleLoc,
+  //               startDate: startDate,
+  //               endDate: endDate,
+  //             ));
 
   @override
   State<SearchVehicleList> createState() => _SearchVehicleListState();
@@ -88,16 +100,32 @@ class _SearchVehicleListState extends State<SearchVehicleList> {
                                       color: Colors.black, size: 30),
                                   tooltip: 'View Car',
                                   onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.renterCarDetails,
-                                        arguments: vehicle.id);
+                                    String vehicleId;
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ViewCarDetails(
+                                                    carType: widget.carType,
+                                                    vehicleLoc:
+                                                        widget.vehicleLoc,
+                                                    startDate: widget.startDate,
+                                                    endDate: widget.endDate,
+                                                    vehicleId: vehicle.id,
+                                                    duration:
+                                                        widget.duration)));
                                   },
                                 )
                               ],
                             ),
-                            onTap: () => Navigator.pushNamed(
-                                context, Routes.renterCarDetails,
-                                arguments: vehicle.id)),
+                            onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => ViewCarDetails(
+                                        carType: widget.carType,
+                                        vehicleLoc: widget.vehicleLoc,
+                                        startDate: widget.startDate,
+                                        endDate: widget.endDate,
+                                        vehicleId: vehicle.id,
+                                        duration: widget.duration)))),
                       ),
                     );
                   }).toList(),

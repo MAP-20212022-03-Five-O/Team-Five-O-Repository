@@ -1,35 +1,34 @@
+import 'package:five_o_car_rental/Models/rent.dart';
 import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
-import 'package:five_o_car_rental/ui/Screens/renter_dashboard/confirmation_screen.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_appbar.dart';
 import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 import 'package:map_mvvm/map_mvvm.dart';
 
-class ViewCarDetails extends StatefulWidget {
-  String carType, vehicleLoc, vehicleId;
+class RentConfirmation extends StatefulWidget {
+  String vehicleId;
   DateTime startDate, endDate;
-  int duration;
-  ViewCarDetails(
+  double price;
+  RentConfirmation(
       {Key? key,
-      required this.vehicleLoc,
-      required this.carType,
       required this.endDate,
       required this.startDate,
       required this.vehicleId,
-      required this.duration})
+      required this.price})
       : super(key: key);
 
   @override
-  State<ViewCarDetails> createState() => _ViewCarDetailsState();
+  State<RentConfirmation> createState() => _RentConfirmationState();
 }
 
 late final VehicleViewModel _vehicleViewModel = locator.get<VehicleViewModel>();
 
-class _ViewCarDetailsState extends State<ViewCarDetails> {
+class _RentConfirmationState extends State<RentConfirmation> {
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +44,7 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                   text: const TextSpan(
                     children: [
                       TextSpan(
-                          text: 'Car Details',
+                          text: 'Booking Confirmation',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 28,
@@ -59,11 +58,16 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                         _vehicleViewModel.getVehicleDetails(widget.vehicleId),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        String startDate =
+                            DateFormat('dd-MM-yyyy').format(widget.startDate);
+                        String endDate =
+                            DateFormat('dd-MM-yyyy').format(widget.endDate);
+
                         Vehicle vehicle = snapshot.data!;
                         return Column(
                           children: [
                             SizedBox(
-                              height: 660,
+                              height: 500,
                               child: Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0),
@@ -86,11 +90,12 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                                                 right: BorderSide(
                                                     width: 1.0,
                                                     color: Colors.blueGrey))),
-                                        child: const Icon(Icons.pin_outlined,
+                                        child: const Icon(
+                                            Icons.directions_car_outlined,
                                             color: Colors.blueGrey),
                                       ),
                                       title: const Text(
-                                        "Location",
+                                        "Car Brand/Model",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
@@ -99,7 +104,7 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text(vehicle.vehicleLoc!,
+                                          Text(vehicle.brand!,
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -149,11 +154,11 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                                                     width: 1.0,
                                                     color: Colors.blueGrey))),
                                         child: const Icon(
-                                            Icons.directions_car_outlined,
+                                            Icons.attach_money_outlined,
                                             color: Colors.blueGrey),
                                       ),
                                       title: const Text(
-                                        "Car Brand/Model",
+                                        "Rent Date",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
@@ -162,101 +167,7 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text(vehicle.brand!,
-                                              style: const TextStyle(
-                                                  color: Colors.black))
-                                        ],
-                                      ),
-                                    ),
-                                    ListTile(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 10.0),
-                                      leading: Container(
-                                        padding:
-                                            const EdgeInsets.only(right: 12.0),
-                                        decoration: const BoxDecoration(
-                                            border: Border(
-                                                right: BorderSide(
-                                                    width: 1.0,
-                                                    color: Colors.blueGrey))),
-                                        child: const Icon(Icons.groups_outlined,
-                                            color: Colors.blueGrey),
-                                      ),
-                                      title: const Text(
-                                        "Maximum Capacity",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        children: <Widget>[
-                                          const Icon(Icons.arrow_right_outlined,
-                                              color: Colors.blueGrey),
-                                          Text(vehicle.capacity!,
-                                              style: const TextStyle(
-                                                  color: Colors.black))
-                                        ],
-                                      ),
-                                    ),
-                                    ListTile(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 10.0),
-                                      leading: Container(
-                                        padding:
-                                            const EdgeInsets.only(right: 12.0),
-                                        decoration: const BoxDecoration(
-                                            border: Border(
-                                                right: BorderSide(
-                                                    width: 1.0,
-                                                    color: Colors.blueGrey))),
-                                        child: const Icon(Icons.groups_outlined,
-                                            color: Colors.blueGrey),
-                                      ),
-                                      title: const Text(
-                                        "Car Type",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        children: <Widget>[
-                                          const Icon(Icons.arrow_right_outlined,
-                                              color: Colors.blueGrey),
-                                          Text(vehicle.carType!,
-                                              style: const TextStyle(
-                                                  color: Colors.black))
-                                        ],
-                                      ),
-                                    ),
-                                    ListTile(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 10.0),
-                                      leading: Container(
-                                        padding:
-                                            const EdgeInsets.only(right: 12.0),
-                                        decoration: const BoxDecoration(
-                                            border: Border(
-                                                right: BorderSide(
-                                                    width: 1.0,
-                                                    color: Colors.blueGrey))),
-                                        child: const Icon(
-                                            Icons.date_range_outlined,
-                                            color: Colors.blueGrey),
-                                      ),
-                                      title: const Text(
-                                        "Manufacture Year",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        children: <Widget>[
-                                          const Icon(Icons.arrow_right_outlined,
-                                              color: Colors.blueGrey),
-                                          Text(vehicle.manYear.toString(),
+                                          Text("${startDate} until ${endDate}",
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -279,7 +190,7 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                                             color: Colors.blueGrey),
                                       ),
                                       title: const Text(
-                                        "Price/day",
+                                        "Total Payment",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
@@ -288,7 +199,39 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text("RM${vehicle.price}",
+                                          Text("RM${widget.price}",
+                                              style: const TextStyle(
+                                                  color: Colors.black))
+                                        ],
+                                      ),
+                                    ),
+                                    ListTile(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
+                                      leading: Container(
+                                        padding:
+                                            const EdgeInsets.only(right: 12.0),
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                right: BorderSide(
+                                                    width: 1.0,
+                                                    color: Colors.blueGrey))),
+                                        child: const Icon(
+                                            Icons.attach_money_outlined,
+                                            color: Colors.blueGrey),
+                                      ),
+                                      title: const Text(
+                                        "Pickup Location",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Row(
+                                        children: <Widget>[
+                                          const Icon(Icons.arrow_right_outlined,
+                                              color: Colors.blueGrey),
+                                          Text("${vehicle.vehicleLoc}",
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -305,21 +248,46 @@ class _ViewCarDetailsState extends State<ViewCarDetails> {
                                 View<VehicleViewModel>(builder: (_, viewmodel) {
                                   return ElevatedButton(
                                       style: raisedButtonStyle,
-                                      child: const Text('Book This Car'),
+                                      child: const Text('Confirm'),
                                       onPressed: () async {
-                                        final price =
-                                            vehicle.price! * widget.duration;
+                                        Vehicle vehicleObj = Vehicle(
+                                            vehicleLoc: vehicle.vehicleLoc,
+                                            plateNo: vehicle.plateNo,
+                                            brand: vehicle.brand,
+                                            capacity: vehicle.capacity,
+                                            carType: vehicle.carType,
+                                            manYear: vehicle.manYear,
+                                            price: vehicle.price,
+                                            ownerid: vehicle.ownerid,
+                                            status: vehicle.status);
+                                        String vehicleId = widget.vehicleId;
+                                        DateTime startDate = widget.startDate;
+                                        DateTime endDate = widget.endDate;
+                                        double payment = widget.price;
 
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RentConfirmation(
-                                                        startDate:
-                                                            widget.startDate,
-                                                        endDate: widget.endDate,
-                                                        vehicleId:
-                                                            widget.vehicleId,
-                                                        price: price)));
+                                        Rent rentObj = Rent(
+                                            vehicleId: vehicleId,
+                                            startDate: startDate,
+                                            endDate: endDate,
+                                            totalPayment: payment);
+
+                                        bool result = await viewmodel
+                                            .rentVehicle(vehicleObj, rentObj);
+                                        if (result == true) {
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Rent Succesfully Booked!')),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text('Unsuccessful')),
+                                          );
+                                        }
                                       });
                                 }),
                                 const SizedBox(width: 10),

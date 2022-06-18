@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:five_o_car_rental/Models/rent.dart';
 import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:five_o_car_rental/app/app.dart';
 import 'package:five_o_car_rental/services/vehicle_service.dart';
@@ -58,11 +59,15 @@ class VehicleViewModel extends Viewmodel {
     return service.getAllVehicle();
   }
 
-  //get all vehicle
+  // Search vehicle
   Stream<QuerySnapshot<Object?>> getSearchVehicle(
-    String carType,
-    String vehicleLoc,
-  ) {
+      String carType, String vehicleLoc) {
     return service.searchVehicle(carType, vehicleLoc);
+  }
+
+  // Add new vehicle
+  Future<bool> rentVehicle(Vehicle vehicle, Rent rent) async {
+    bool status = await service.rentVehicle(vehicle, rent);
+    return status;
   }
 }

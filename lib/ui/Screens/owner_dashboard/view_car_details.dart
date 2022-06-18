@@ -52,7 +52,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                       if (snapshot.hasData) {
                         Vehicle vehicle = snapshot.data!;
                         return SizedBox(
-                          height: 570,
+                          height: 660,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),

@@ -27,6 +27,7 @@ class _ExploreTabState extends State<ExploreTab> {
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   DateTime? startDate = DateTime(2022);
+  DateTime? endDate = DateTime(2022);
   // String selectedValue = "Select car type";
   String carTypeValue = 'Sedan';
   String carLocValue = 'Kuala Lumpur';
@@ -179,8 +180,6 @@ class _ExploreTabState extends State<ExploreTab> {
                       ),
                       controller: endDateController,
                       onTap: () async {
-                        DateTime? endDate = DateTime(2022);
-
                         FocusScope.of(context).requestFocus(FocusNode());
 
                         endDate = await DatePicker.showDatePicker(context,
@@ -200,11 +199,19 @@ class _ExploreTabState extends State<ExploreTab> {
                       style: raisedButtonStyle,
                       child: const Text('Search Available Vehicles'),
                       onPressed: () async {
-                        String vehicleLoc = carLocValue;
+                        final int? difference =
+                            endDate?.difference(startDate!).inDays;
+                        int duration = difference! + 1;
+                        print(duration);
+                        String? vehicleLoc = carLocValue;
                         carType = carTypeValue;
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SearchVehicleList(
-                                carType: carType!, vehicleLoc: vehicleLoc)));
+                                carType: carType!,
+                                vehicleLoc: vehicleLoc,
+                                startDate: startDate!,
+                                endDate: endDate!,
+                                duration: duration)));
                       });
                 }),
               ],

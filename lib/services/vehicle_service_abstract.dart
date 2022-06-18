@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:five_o_car_rental/Models/rent.dart';
 import 'package:five_o_car_rental/Models/user.dart';
 import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:map_mvvm/service_stream.dart';
@@ -8,7 +9,7 @@ abstract class VehicleServiceAbstract with ServiceStream {
   Future<bool> addVehicle(Vehicle vehicle);
 
   //get list of owner vehicle
-  Stream<QuerySnapshot<Object?>> getOwnerVehicle(String userid);
+  Stream<QuerySnapshot<Object?>> getOwnerVehicle(String ownerid);
 
   //get vehicle
   Stream<Vehicle> getVehicleDetails(String id);
@@ -26,4 +27,7 @@ abstract class VehicleServiceAbstract with ServiceStream {
     String carType,
     String vehicleLoc,
   );
+
+  //rent vehicle
+  Future<bool> rentVehicle(Vehicle vehicle, Rent rent);
 }

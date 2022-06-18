@@ -28,8 +28,6 @@ class Routes {
   static const String updateCar = '/updateCar';
   static const String updateProfile = '/updateProfile';
   static const String viewAllVehicles = '/viewAllVehicles';
-  static const String searchVehicleList = '/searchVehicleList';
-  static const String renterCarDetails = '/renterCarDetails';
 
   static Route<dynamic>? createRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -57,13 +55,6 @@ class Routes {
         return UpdateUserProfile.route();
       case viewAllVehicles:
         return ViewAllVehicles.route();
-      case searchVehicleList:
-        return SearchVehicleList.route(
-          settings.arguments.toString(),
-          settings.arguments.toString(),
-        );
-      case renterCarDetails:
-        return ViewCarDetails.route(settings.arguments.toString());
     }
     return null;
   }

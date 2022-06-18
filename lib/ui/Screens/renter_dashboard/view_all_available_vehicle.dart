@@ -30,7 +30,7 @@ class _ViewAllVehiclesState extends State<ViewAllVehicles> {
             stream: _vehicleViewModel.getAllVehicle(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final vehicle = snapshot.data!;
+                final vehicle = snapshot.data;
                 return ListView(children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +51,7 @@ class _ViewAllVehiclesState extends State<ViewAllVehicles> {
                       const SizedBox(height: 50)
                     ],
                   ),
-                  ...vehicle.docs.map((vehicle) {
+                  ...vehicle!.docs.map((vehicle) {
                     Vehicle v = Vehicle.fromFirestore(vehicle);
                     return Card(
                       shape: OutlineInputBorder(
