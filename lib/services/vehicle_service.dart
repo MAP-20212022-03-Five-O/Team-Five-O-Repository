@@ -12,17 +12,17 @@ class VehicleService extends VehicleServiceAbstract {
 
   //Add new Car
   @override
-  Future<bool> addVehicle(String plateNo, String brand, String capacity,
-      String carType, int manYear, double price) async {
+  Future<bool> addVehicle(Vehicle vehicle) async {
     try {
       String userid = _auth.currentUser!.uid;
       await vehicles.doc().set(Vehicle(
-              plateNo: plateNo,
-              brand: brand,
-              capacity: capacity,
-              carType: carType,
-              manYear: manYear,
-              price: price,
+              vehicleLoc: vehicle.vehicleLoc,
+              plateNo: vehicle.plateNo,
+              brand: vehicle.brand,
+              capacity: vehicle.capacity,
+              carType: vehicle.carType,
+              manYear: vehicle.manYear,
+              price: vehicle.price,
               userid: userid)
           .toMap());
     } catch (e) {
@@ -44,17 +44,17 @@ class VehicleService extends VehicleServiceAbstract {
 
 //update vehicle details
   @override
-  Future<bool> updateVehicle(String plateNo, String brand, String capacity,
-      String carType, int manYear, double price, String vid) async {
+  Future<bool> updateVehicle(Vehicle vehicle, String vid) async {
     try {
       String userid = _auth.currentUser!.uid;
       await vehicles.doc(vid).update(Vehicle(
-            plateNo: plateNo,
-            brand: brand,
-            capacity: capacity,
-            carType: carType,
-            manYear: manYear,
-            price: price,
+            vehicleLoc: vehicle.vehicleLoc,
+            plateNo: vehicle.plateNo,
+            brand: vehicle.brand,
+            capacity: vehicle.capacity,
+            carType: vehicle.carType,
+            manYear: vehicle.manYear,
+            price: vehicle.price,
             userid: userid,
           ).toMap());
     } catch (e) {
@@ -72,5 +72,21 @@ class VehicleService extends VehicleServiceAbstract {
       return false;
     }
     return true;
+  }
+
+  //renter view all vehicle
+  @override
+  Stream<QuerySnapshot<Object?>> getAllVehicle() {
+    return vehicles.snapshots();
+  }
+
+  //search vehicle list
+  @override
+  Stream<QuerySnapshot<Object?>> searchVehicle(
+      String carType, String vehicleLoc) {
+    return vehicles
+        .where('carType', isEqualTo: carType)
+        .where('vehicleLoc', isEqualTo: vehicleLoc)
+        .snapshots();
   }
 }

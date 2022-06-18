@@ -5,6 +5,9 @@ import 'package:five_o_car_rental/ui/Screens/owner_dashboard/update_profile.dart
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/view_car_details.dart';
 import 'package:five_o_car_rental/ui/Screens/register/register_screen.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_screen.dart';
+import 'package:five_o_car_rental/ui/Screens/renter_dashboard/search_vehicle_list.dart';
+import 'package:five_o_car_rental/ui/Screens/renter_dashboard/view_all_available_vehicle.dart';
+import 'package:five_o_car_rental/ui/Screens/renter_dashboard/view_car_details.dart';
 import 'package:five_o_car_rental/ui/Screens/resetPassword/reset_screen.dart';
 import 'package:five_o_car_rental/ui/splash.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +27,9 @@ class Routes {
   static const String carDetails = '/carDetails';
   static const String updateCar = '/updateCar';
   static const String updateProfile = '/updateProfile';
+  static const String viewAllVehicles = '/viewAllVehicles';
+  static const String searchVehicleList = '/searchVehicleList';
+  static const String renterCarDetails = '/renterCarDetails';
 
   static Route<dynamic>? createRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -49,6 +55,15 @@ class Routes {
         return UpdateCarScreen.route(settings.arguments.toString());
       case updateProfile:
         return UpdateUserProfile.route();
+      case viewAllVehicles:
+        return ViewAllVehicles.route();
+      case searchVehicleList:
+        return SearchVehicleList.route(
+          settings.arguments.toString(),
+          settings.arguments.toString(),
+        );
+      case renterCarDetails:
+        return ViewCarDetails.route(settings.arguments.toString());
     }
     return null;
   }

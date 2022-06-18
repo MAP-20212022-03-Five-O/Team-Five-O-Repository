@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Vehicle model
 class Vehicle {
-  final String? plateNo, brand, capacity, carType, userid;
+  final String? vehicleLoc, plateNo, brand, capacity, carType, userid;
   final int? manYear;
   final double? price;
 
   Vehicle({
+    this.vehicleLoc,
     this.plateNo,
     this.brand,
     this.capacity,
@@ -19,6 +20,7 @@ class Vehicle {
   factory Vehicle.fromFirestore(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
     return Vehicle(
+      vehicleLoc: data['vehicleLoc'],
       plateNo: data['plateNo'],
       brand: data['brand'],
       capacity: data['capacity'],
@@ -30,7 +32,8 @@ class Vehicle {
   }
 
   Vehicle.fromJson(Map<String, dynamic> map, this.userid)
-      : plateNo = map['plateNo'],
+      : vehicleLoc = map['vehicleLoc'],
+        plateNo = map['plateNo'],
         brand = map['brand'],
         capacity = map['capacity'],
         carType = map['carType'],
@@ -40,6 +43,7 @@ class Vehicle {
   //Convert to json
   Map<String, dynamic> toMap() {
     return {
+      'vehicleLoc': vehicleLoc,
       'plateNo': plateNo,
       'brand': brand,
       'capacity': capacity,

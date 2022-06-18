@@ -1,27 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:five_o_car_rental/Models/vehicle.dart';
-import 'package:five_o_car_rental/app/app.dart';
-import 'package:five_o_car_rental/ui/Screens/owner_dashboard/home_appbar.dart';
-import 'package:five_o_car_rental/ui/button_style.dart';
+import 'package:five_o_car_rental/app/service_locator.dart';
+import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_appbar.dart';
+import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:map_mvvm/map_mvvm.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
-import '../../../viewmodel/vehicle_viewmodel.dart';
-
-class ViewDetailsScreen extends StatefulWidget {
-  const ViewDetailsScreen({Key? key, required this.id}) : super(key: key);
+class ViewCarDetails extends StatefulWidget {
+  const ViewCarDetails({Key? key, required this.id}) : super(key: key);
   final String id;
   static Route route(String vid) =>
-      MaterialPageRoute(builder: (_) => ViewDetailsScreen(id: vid));
-
+      MaterialPageRoute(builder: (_) => ViewCarDetails(id: vid));
   @override
-  State<ViewDetailsScreen> createState() => _ViewDetailsScreenState();
+  State<ViewCarDetails> createState() => _ViewCarDetailsState();
 }
 
 late final VehicleViewModel _vehicleViewModel = locator.get<VehicleViewModel>();
-late final BuildContext _context;
 
-class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
+class _ViewCarDetailsState extends State<ViewCarDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

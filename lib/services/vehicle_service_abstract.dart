@@ -5,8 +5,7 @@ import 'package:map_mvvm/service_stream.dart';
 
 abstract class VehicleServiceAbstract with ServiceStream {
   //add vehicle
-  Future<bool> addVehicle(String plateNo, String brand, String capacity,
-      String carType, int manYear, double price);
+  Future<bool> addVehicle(Vehicle vehicle);
 
   //get list of owner vehicle
   Stream<QuerySnapshot<Object?>> getOwnerVehicle(String userid);
@@ -15,7 +14,16 @@ abstract class VehicleServiceAbstract with ServiceStream {
   Stream<Vehicle> getVehicleDetails(String id);
 
   //update
-  Future<bool> updateVehicle(String plateNo, String brand, String capacity,
-      String carType, int manYear, double price, String vid);
+  Future<bool> updateVehicle(Vehicle vehicle, String vid);
+
+  //delete vehicle
   Future<bool> deleteVehicle(String vid);
+
+  //display all vehicle
+  Stream<QuerySnapshot<Object?>> getAllVehicle();
+
+  Stream<QuerySnapshot<Object?>> searchVehicle(
+    String carType,
+    String vehicleLoc,
+  );
 }

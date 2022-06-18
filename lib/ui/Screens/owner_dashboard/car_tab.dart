@@ -71,13 +71,14 @@ class _CarTabState extends State<CarTab> {
                   return Card(
                     shape: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.amberAccent)),
+                        borderSide:
+                            const BorderSide(color: Colors.amberAccent)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                           title: Text(
                             v.brand!,
-                            style: TextStyle(fontSize: 18),
+                            style: const TextStyle(fontSize: 18),
                           ),
                           subtitle: Text('RM ${v.price}'),
                           trailing: Row(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:map_mvvm/map_mvvm.dart';
 import 'package:flutter/services.dart';
 
+import '../../../Models/vehicle.dart';
 import '../../../viewmodel/vehicle_viewmodel.dart';
 
 class AddCar extends StatefulWidget {
@@ -19,7 +20,10 @@ class AddCar extends StatefulWidget {
 class _AddCarState extends State<AddCar> {
   final _key = GlobalKey<FormState>();
   FocusNode myFocusNode = FocusNode();
+  String carTypeValue = 'Sedan';
+  String carLocValue = 'Kuala Lumpur';
 
+  String? vehicleLoc;
   String? plateNo;
   String? brand;
   String? capacity;
@@ -28,8 +32,15 @@ class _AddCarState extends State<AddCar> {
   double? price;
 
   Future _onAddCar(BuildContext context, VehicleViewModel viewmodel) async {
-    bool result = await viewmodel.addVehicle(
-        plateNo, brand, capacity, carType, manYear, price);
+    Vehicle vehicle = Vehicle(
+        vehicleLoc: carLocValue,
+        plateNo: plateNo,
+        brand: brand,
+        capacity: capacity,
+        carType: carTypeValue,
+        manYear: manYear,
+        price: price);
+    bool result = await viewmodel.addVehicle(vehicle);
     //print(result);
     if (result == true) {
       Navigator.pop(context);
@@ -58,6 +69,42 @@ class _AddCarState extends State<AddCar> {
                     width: 100,
                     child: LogoAsset(),
                   ),
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      child: DropdownButtonFormField<String>(
+                        hint: const Text('Select Location'),
+                        value: carLocValue,
+                        decoration:
+                            const InputDecoration(fillColor: Colors.black),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            carLocValue = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'Kuala Lumpur',
+                          'Selangor',
+                          'Negeri Sembilan',
+                          'Johor',
+                          'Perak',
+                          'Kedah',
+                          'Penang',
+                          'Perlis',
+                          'Pahang',
+                          'Terengganu',
+                          'Kelantan',
+                          'Melaka',
+                          'Sabah',
+                          'Sarawak',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
@@ -118,23 +165,28 @@ class _AddCarState extends State<AddCar> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Car Type is empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      onSaved: (newValue) => carType = newValue,
-                      decoration: const InputDecoration(
-                        hintText: 'Car Type',
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter Car Type',
-                      ),
-                    ),
-                  ),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: DropdownButtonFormField<String>(
+                        hint: const Text('Select Car Type'),
+                        value: carTypeValue,
+                        decoration:
+                            const InputDecoration(fillColor: Colors.black),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black),
+                        onChanged: (String? newValue) {},
+                        onSaved: (newValue) => carTypeValue = newValue!,
+                        items: <String>[
+                          'Sedan',
+                          'MPV',
+                          'Hatchback',
+                          'Pickup Trucks'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      )),
                   Container(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: TextFormField(

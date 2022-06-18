@@ -23,6 +23,7 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
   final _key = GlobalKey<FormState>();
   FocusNode myFocusNode = FocusNode();
 
+  TextEditingController vehicleLocController = TextEditingController();
   TextEditingController platenoController = TextEditingController();
   TextEditingController brandController = TextEditingController();
   TextEditingController cartypeController = TextEditingController();
@@ -30,6 +31,7 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
   TextEditingController manYearController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
+  String? vehicleLoc;
   String? plateNo;
   String? brand;
   String? capacity;
@@ -37,10 +39,19 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
   int? manYear;
   double? price;
   String? vid;
+  String carLocValue = 'Kuala Lumpur';
+  String carTypeValue = 'Sedan';
 
   Future _onUpdateCar(BuildContext context, VehicleViewModel viewmodel) async {
-    bool result = await viewmodel.updateVehicle(
-        plateNo, brand, capacity, carType, manYear, price, vid);
+    Vehicle vehicle = Vehicle(
+        vehicleLoc: carLocValue,
+        plateNo: plateNo,
+        brand: brand,
+        capacity: capacity,
+        carType: carTypeValue,
+        manYear: manYear,
+        price: price);
+    bool result = await viewmodel.updateVehicle(vehicle, vid);
     //print(result);
     if (result == true) {
       Navigator.pop(context);
@@ -74,6 +85,62 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
                             width: 100,
                             child: LogoAsset(),
                           ),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              child: DropdownButtonFormField<String>(
+                                hint: const Text('Select Location'),
+                                value: carLocValue,
+                                decoration: const InputDecoration(
+                                    fillColor: Colors.black),
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (String? newValue) {},
+                                onSaved: (newValue) => carLocValue = newValue!,
+                                items: <String>[
+                                  'Kuala Lumpur',
+                                  'Selangor',
+                                  'Negeri Sembilan',
+                                  'Johor',
+                                  'Perak',
+                                  'Kedah',
+                                  'Penang',
+                                  'Perlis',
+                                  'Pahang',
+                                  'Terengganu',
+                                  'Kelantan',
+                                  'Melaka',
+                                  'Sabah',
+                                  'Sarawak',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              child: DropdownButtonFormField<String>(
+                                hint: const Text('Select Car Type'),
+                                value: carTypeValue,
+                                decoration: const InputDecoration(
+                                    fillColor: Colors.black),
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (String? newValue) {},
+                                onSaved: (newValue) => carTypeValue = newValue!,
+                                items: <String>[
+                                  'Sedan',
+                                  'MPV',
+                                  'Hatchback',
+                                  'Pickup Trucks'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              )),
                           Container(
                             padding: const EdgeInsets.all(10),
                             child: TextFormField(
@@ -137,26 +204,6 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
                                 counterText: '',
                                 border: OutlineInputBorder(),
                                 labelText: 'Enter Maximum Capacity',
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Car Type is empty";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              controller: cartypeController
-                                ..text = '${vehicle.carType}',
-                              onSaved: (newValue) => carType = newValue,
-                              decoration: const InputDecoration(
-                                hintText: 'Car Type',
-                                border: OutlineInputBorder(),
-                                labelText: 'Enter Car Type',
                               ),
                             ),
                           ),

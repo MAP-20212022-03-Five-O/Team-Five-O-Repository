@@ -27,10 +27,8 @@ class VehicleViewModel extends Viewmodel {
   }
 
   // Add new vehicle
-  Future<bool> addVehicle(
-      plateNo, brand, capacity, carType, manYear, price) async {
-    bool status = await service.addVehicle(
-        plateNo, brand, capacity, carType, manYear, price);
+  Future<bool> addVehicle(Vehicle vehicle) async {
+    bool status = await service.addVehicle(vehicle);
     return status;
   }
 
@@ -44,10 +42,8 @@ class VehicleViewModel extends Viewmodel {
   Stream<Vehicle> getVehicleDetails(String id) => service.getVehicleDetails(id);
 
 //update vehicle details
-  Future<bool> updateVehicle(
-      plateNo, brand, capacity, carType, manYear, price, vid) async {
-    bool status = await service.updateVehicle(
-        plateNo, brand, capacity, carType, manYear, price, vid);
+  Future<bool> updateVehicle(Vehicle vehicle, vid) async {
+    bool status = await service.updateVehicle(vehicle, vid);
     return status;
   }
 
@@ -55,5 +51,18 @@ class VehicleViewModel extends Viewmodel {
   Future<bool> deleteVehicle(vid) async {
     bool status = await service.deleteVehicle(vid);
     return status;
+  }
+
+  //get all vehicle
+  Stream<QuerySnapshot<Object?>> getAllVehicle() {
+    return service.getAllVehicle();
+  }
+
+  //get all vehicle
+  Stream<QuerySnapshot<Object?>> getSearchVehicle(
+    String carType,
+    String vehicleLoc,
+  ) {
+    return service.searchVehicle(carType, vehicleLoc);
   }
 }
