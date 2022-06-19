@@ -70,4 +70,12 @@ class VehicleViewModel extends Viewmodel {
     bool status = await service.rentVehicle(vehicle, rent);
     return status;
   }
+
+  //get all active rent
+  Stream<QuerySnapshot<Object?>> getActiveRent() {
+    return service.getActiveRent();
+  }
+
+  //get only selected rent
+  Stream<Rent> getRentDetails(String id) => service.getRentDetails(id);
 }

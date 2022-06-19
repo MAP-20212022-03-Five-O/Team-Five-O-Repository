@@ -81,7 +81,7 @@ class VehicleService extends VehicleServiceAbstract {
   //renter view all vehicle
   @override
   Stream<QuerySnapshot<Object?>> getAllVehicle() {
-    return vehicles.snapshots();
+    return vehicles.where('status', isEqualTo: 'available').snapshots();
   }
 
   //search vehicle list
@@ -106,7 +106,9 @@ class VehicleService extends VehicleServiceAbstract {
               vehicleId: rent.vehicleId,
               startDate: rent.startDate,
               endDate: rent.endDate,
-              totalPayment: rent.totalPayment)
+              totalPayment: rent.totalPayment,
+              brand: rent.brand,
+              plateNo: rent.plateNo)
           .toMap());
       await vehicles.doc(rent.vehicleId).update(Vehicle(
               vehicleLoc: vehicle.vehicleLoc,
@@ -124,4 +126,17 @@ class VehicleService extends VehicleServiceAbstract {
     }
     return true;
   }
+
+  //retrieve owner vehicle list
+  @override
+  Stream<QuerySnapshot<Object?>> getActiveRent() {
+    String renterid = _auth.currentUser!.uid;
+
+    return rents.where('renterid', isEqualTo: renterid).snapshots();
+  }
+
+  //retrieve Rent details
+  @override
+  Stream<Rent> getRentDetails(String id) =>
+      rents.doc(id).snapshots().map((event) => Rent.fromFirestore(event));
 }

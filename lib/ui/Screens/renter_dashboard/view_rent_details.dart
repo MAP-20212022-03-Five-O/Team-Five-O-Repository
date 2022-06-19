@@ -1,38 +1,25 @@
 import 'package:five_o_car_rental/Models/rent.dart';
-import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_appbar.dart';
-import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:map_mvvm/map_mvvm.dart';
 
-import '../../../app/routes.dart';
-
-class RentConfirmation extends StatefulWidget {
-  String vehicleId;
-  DateTime startDate, endDate;
-  double price;
-  RentConfirmation(
-      {Key? key,
-      required this.endDate,
-      required this.startDate,
-      required this.vehicleId,
-      required this.price})
-      : super(key: key);
-
+class ViewRentDetails extends StatefulWidget {
+  const ViewRentDetails({Key? key, required this.rentid}) : super(key: key);
+  final String rentid;
+  static Route route(String rentid) =>
+      MaterialPageRoute(builder: (_) => ViewRentDetails(rentid: rentid));
   @override
-  State<RentConfirmation> createState() => _RentConfirmationState();
+  State<ViewRentDetails> createState() => _ViewRentDetailsState();
 }
 
 late final VehicleViewModel _vehicleViewModel = locator.get<VehicleViewModel>();
 
-class _RentConfirmationState extends State<RentConfirmation> {
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
-
+class _ViewRentDetailsState extends State<ViewRentDetails> {
   @override
   Widget build(BuildContext context) {
+    print(widget.rentid);
     return Scaffold(
       appBar: appBar(),
       body: Container(
@@ -46,7 +33,7 @@ class _RentConfirmationState extends State<RentConfirmation> {
                   text: const TextSpan(
                     children: [
                       TextSpan(
-                          text: 'Booking Confirmation',
+                          text: 'Rent Details',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 28,
@@ -55,21 +42,20 @@ class _RentConfirmationState extends State<RentConfirmation> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                StreamBuilder<Vehicle>(
-                    stream:
-                        _vehicleViewModel.getVehicleDetails(widget.vehicleId),
+                StreamBuilder<Rent>(
+                    stream: _vehicleViewModel.getRentDetails(widget.rentid),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        String startDate =
-                            DateFormat('dd-MM-yyyy').format(widget.startDate);
-                        String endDate =
-                            DateFormat('dd-MM-yyyy').format(widget.endDate);
+                        Rent rent = snapshot.data!;
 
-                        Vehicle vehicle = snapshot.data!;
+                        String startDate =
+                            DateFormat('dd-MM-yyyy').format(rent.startDate!);
+                        String endDate =
+                            DateFormat('dd-MM-yyyy').format(rent.endDate!);
                         return Column(
                           children: [
                             SizedBox(
-                              height: 500,
+                              height: 400,
                               child: Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0),
@@ -92,12 +78,11 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                                 right: BorderSide(
                                                     width: 1.0,
                                                     color: Colors.blueGrey))),
-                                        child: const Icon(
-                                            Icons.directions_car_outlined,
+                                        child: const Icon(Icons.pin_outlined,
                                             color: Colors.blueGrey),
                                       ),
                                       title: const Text(
-                                        "Car Brand/Model",
+                                        "Brand",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
@@ -106,7 +91,7 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text(vehicle.brand!,
+                                          Text(rent.brand!,
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -137,7 +122,7 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text(vehicle.plateNo!,
+                                          Text(rent.plateNo!,
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -156,11 +141,11 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                                     width: 1.0,
                                                     color: Colors.blueGrey))),
                                         child: const Icon(
-                                            Icons.attach_money_outlined,
+                                            Icons.directions_car_outlined,
                                             color: Colors.blueGrey),
                                       ),
                                       title: const Text(
-                                        "Rent Date",
+                                        "Rental date",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
@@ -169,7 +154,7 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text("${startDate} until ${endDate}",
+                                          Text('$startDate until $endDate',
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -187,12 +172,11 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                                 right: BorderSide(
                                                     width: 1.0,
                                                     color: Colors.blueGrey))),
-                                        child: const Icon(
-                                            Icons.attach_money_outlined,
+                                        child: const Icon(Icons.groups_outlined,
                                             color: Colors.blueGrey),
                                       ),
                                       title: const Text(
-                                        "Total Payment",
+                                        "Rent Payment",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
@@ -201,39 +185,7 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text("RM${widget.price}",
-                                              style: const TextStyle(
-                                                  color: Colors.black))
-                                        ],
-                                      ),
-                                    ),
-                                    ListTile(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 10.0),
-                                      leading: Container(
-                                        padding:
-                                            const EdgeInsets.only(right: 12.0),
-                                        decoration: const BoxDecoration(
-                                            border: Border(
-                                                right: BorderSide(
-                                                    width: 1.0,
-                                                    color: Colors.blueGrey))),
-                                        child: const Icon(
-                                            Icons.attach_money_outlined,
-                                            color: Colors.blueGrey),
-                                      ),
-                                      title: const Text(
-                                        "Pickup Location",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Row(
-                                        children: <Widget>[
-                                          const Icon(Icons.arrow_right_outlined,
-                                              color: Colors.blueGrey),
-                                          Text("${vehicle.vehicleLoc}",
+                                          Text('${rent.totalPayment!}',
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -242,72 +194,6 @@ class _RentConfirmationState extends State<RentConfirmation> {
                                   ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                View<VehicleViewModel>(builder: (_, viewmodel) {
-                                  return ElevatedButton(
-                                      style: raisedButtonStyle,
-                                      child: const Text('Confirm'),
-                                      onPressed: () async {
-                                        Vehicle vehicleObj = Vehicle(
-                                            vehicleLoc: vehicle.vehicleLoc,
-                                            plateNo: vehicle.plateNo,
-                                            brand: vehicle.brand,
-                                            capacity: vehicle.capacity,
-                                            carType: vehicle.carType,
-                                            manYear: vehicle.manYear,
-                                            price: vehicle.price,
-                                            ownerid: vehicle.ownerid,
-                                            status: vehicle.status);
-                                        String vehicleId = widget.vehicleId;
-                                        DateTime startDate = widget.startDate;
-                                        DateTime endDate = widget.endDate;
-                                        double payment = widget.price;
-
-                                        Rent rentObj = Rent(
-                                            vehicleId: vehicleId,
-                                            startDate: startDate,
-                                            endDate: endDate,
-                                            totalPayment: payment,
-                                            brand: vehicle.brand,
-                                            plateNo: vehicle.plateNo);
-
-                                        bool result = await viewmodel
-                                            .rentVehicle(vehicleObj, rentObj);
-                                        if (result == true) {
-                                          int count = 0;
-                                          Navigator.popUntil(context, (route) {
-                                            return count++ == 3;
-                                          });
-
-                                          // Navigator.pushReplacementNamed(
-                                          //     context, Routes.bookingTab);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                                content: Text(
-                                                    'Rent Succesfully Booked!')),
-                                          );
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                                content: Text('Unsuccessful')),
-                                          );
-                                        }
-                                      });
-                                }),
-                                const SizedBox(width: 10),
-                                ElevatedButton(
-                                    style: raisedButtonStyle,
-                                    child: const Text('Cancel'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    }),
-                              ],
                             ),
                           ],
                         );

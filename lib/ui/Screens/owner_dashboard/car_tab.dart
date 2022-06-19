@@ -18,7 +18,6 @@ class CarTab extends StatefulWidget {
 }
 
 late final VehicleViewModel _vehicleViewModel = locator.get<VehicleViewModel>();
-late final BuildContext _context;
 
 class _CarTabState extends State<CarTab> {
   @override

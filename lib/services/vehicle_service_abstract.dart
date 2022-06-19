@@ -30,4 +30,9 @@ abstract class VehicleServiceAbstract with ServiceStream {
 
   //rent vehicle
   Future<bool> rentVehicle(Vehicle vehicle, Rent rent);
+
+  //view active rent
+  Stream<QuerySnapshot<Object?>> getActiveRent();
+
+  Stream<Rent> getRentDetails(String id);
 }

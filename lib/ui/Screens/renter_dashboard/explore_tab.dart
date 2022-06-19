@@ -202,7 +202,7 @@ class _ExploreTabState extends State<ExploreTab> {
                         final int? difference =
                             endDate?.difference(startDate!).inDays;
                         int duration = difference! + 1;
-                        print(duration);
+
                         String? vehicleLoc = carLocValue;
                         carType = carTypeValue;
                         Navigator.of(context).push(MaterialPageRoute(
