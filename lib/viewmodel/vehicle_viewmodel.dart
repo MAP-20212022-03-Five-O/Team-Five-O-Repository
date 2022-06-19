@@ -78,4 +78,8 @@ class VehicleViewModel extends Viewmodel {
 
   //get only selected rent
   Stream<Rent> getRentDetails(String id) => service.getRentDetails(id);
+
+  //reserved vehicle
+  Stream<QuerySnapshot<Object?>> getReservedVehicle() =>
+      service.getReservedVehicle();
 }

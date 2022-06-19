@@ -1,8 +1,11 @@
+import 'package:five_o_car_rental/app/routes.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/account_tab.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/booking_tab.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/explore_tab.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_appbar.dart';
+import 'package:five_o_car_rental/viewmodel/user_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:map_mvvm/map_mvvm.dart';
 
 class RenterDashboard extends StatefulWidget {
   const RenterDashboard({Key? key}) : super(key: key);
@@ -38,7 +41,30 @@ class _RenterDashboardState extends State<RenterDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80.0),
+        child: AppBar(
+          title: Image.asset(
+            'assets/images/logo.png',
+            fit: BoxFit.cover,
+            height: 150,
+          ),
+          centerTitle: true, // like this!
+          backgroundColor: Colors.white,
+          actions: <Widget>[
+            View<UserViewModel>(builder: (_, viewmodel) {
+              return IconButton(
+                icon: const Icon(Icons.logout, color: Colors.black, size: 30),
+                tooltip: 'Logout',
+                onPressed: () {
+                  viewmodel.signOut();
+                  Navigator.popAndPushNamed(context, Routes.login);
+                },
+              );
+            }),
+          ],
+        ),
+      ),
       body: PageView(
         children: tabPages,
         onPageChanged: onPageChanged,

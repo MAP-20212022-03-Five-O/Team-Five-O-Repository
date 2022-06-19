@@ -139,4 +139,12 @@ class VehicleService extends VehicleServiceAbstract {
   @override
   Stream<Rent> getRentDetails(String id) =>
       rents.doc(id).snapshots().map((event) => Rent.fromFirestore(event));
+
+  //retrieve reserved vehicle list
+  @override
+  Stream<QuerySnapshot<Object?>> getReservedVehicle() {
+    String ownerid = _auth.currentUser!.uid;
+
+    return rents.where('ownerid', isEqualTo: ownerid).snapshots();
+  }
 }

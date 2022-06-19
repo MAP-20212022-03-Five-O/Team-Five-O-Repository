@@ -3,8 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:five_o_car_rental/services/auth_service_abstract.dart';
-import 'package:map_mvvm/map_mvvm.dart';
-import 'database_manager.dart';
+
 import '../Models/user.dart';
 
 // ignore: camel_case_types

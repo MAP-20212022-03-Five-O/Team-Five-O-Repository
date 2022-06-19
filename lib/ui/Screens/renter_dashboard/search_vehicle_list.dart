@@ -5,10 +5,7 @@ import 'package:five_o_car_rental/ui/Screens/owner_dashboard/home_appbar.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/view_car_details.dart';
 import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
-import '../../../app/routes.dart';
 import '../owner_dashboard/home_appbar.dart';
 
 class SearchVehicleList extends StatefulWidget {

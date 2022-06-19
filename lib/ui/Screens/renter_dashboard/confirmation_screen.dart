@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:map_mvvm/map_mvvm.dart';
 
-import '../../../app/routes.dart';
-
 class RentConfirmation extends StatefulWidget {
   String vehicleId;
   DateTime startDate, endDate;

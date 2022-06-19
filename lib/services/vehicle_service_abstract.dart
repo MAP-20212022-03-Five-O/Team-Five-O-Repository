@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:five_o_car_rental/Models/rent.dart';
-import 'package:five_o_car_rental/Models/user.dart';
+
 import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:map_mvvm/service_stream.dart';
 
@@ -23,6 +23,7 @@ abstract class VehicleServiceAbstract with ServiceStream {
   //display all vehicle
   Stream<QuerySnapshot<Object?>> getAllVehicle();
 
+  //Search vehicle by car type and location
   Stream<QuerySnapshot<Object?>> searchVehicle(
     String carType,
     String vehicleLoc,
@@ -34,5 +35,9 @@ abstract class VehicleServiceAbstract with ServiceStream {
   //view active rent
   Stream<QuerySnapshot<Object?>> getActiveRent();
 
+  //view reserved vehicle
+  Stream<QuerySnapshot<Object?>> getReservedVehicle();
+
+  //get rent details
   Stream<Rent> getRentDetails(String id);
 }
