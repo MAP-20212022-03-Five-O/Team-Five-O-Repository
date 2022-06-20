@@ -84,7 +84,7 @@ class VehicleService extends VehicleServiceAbstract {
     return vehicles.where('status', isEqualTo: 'available').snapshots();
   }
 
-  //search vehicle list
+  //renter search vehicle list
   @override
   Stream<QuerySnapshot<Object?>> searchVehicle(
       String carType, String vehicleLoc) {
@@ -108,8 +108,10 @@ class VehicleService extends VehicleServiceAbstract {
               endDate: rent.endDate,
               totalPayment: rent.totalPayment,
               brand: rent.brand,
-              plateNo: rent.plateNo)
+              plateNo: rent.plateNo) //aggregate rent and vehicle model
+          //Rent.aggregate(vehicle, rent).toMap()
           .toMap());
+      // update( { 'status '  :  'reserved'})
       await vehicles.doc(rent.vehicleId).update(Vehicle(
               vehicleLoc: vehicle.vehicleLoc,
               plateNo: vehicle.plateNo,
@@ -121,6 +123,8 @@ class VehicleService extends VehicleServiceAbstract {
               ownerid: vehicle.ownerid,
               status: 'reserved')
           .toMap());
+
+      //update( { 'status '  :  'reserved'})
     } catch (e) {
       return false;
     }
@@ -146,5 +150,16 @@ class VehicleService extends VehicleServiceAbstract {
     String ownerid = _auth.currentUser!.uid;
 
     return rents.where('ownerid', isEqualTo: ownerid).snapshots();
+  }
+
+  //cancel booking
+  @override
+  Future<bool> cancelBooking(String rentid) async {
+    try {
+      await rents.doc(rentid).delete();
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 }

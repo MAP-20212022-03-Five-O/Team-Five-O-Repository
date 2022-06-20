@@ -40,4 +40,7 @@ abstract class VehicleServiceAbstract with ServiceStream {
 
   //get rent details
   Stream<Rent> getRentDetails(String id);
+
+  //Cancel Booking
+  Future<bool> cancelBooking(String rentid);
 }

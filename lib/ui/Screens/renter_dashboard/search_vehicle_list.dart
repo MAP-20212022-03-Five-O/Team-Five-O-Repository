@@ -21,17 +21,6 @@ class SearchVehicleList extends StatefulWidget {
     required this.duration,
   }) : super(key: key);
 
-  // final String carType, vehicleLoc;
-  // static Route route(String carType, String vehicleLoc, DateTime startDate,
-  //         DateTime endDate) =>
-  //     MaterialPageRoute(
-  //         builder: (_) => SearchVehicleList(
-  //               carType: carType,
-  //               vehicleLoc: vehicleLoc,
-  //               startDate: startDate,
-  //               endDate: endDate,
-  //             ));
-
   @override
   State<SearchVehicleList> createState() => _SearchVehicleListState();
 }

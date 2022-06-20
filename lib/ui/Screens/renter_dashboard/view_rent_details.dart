@@ -1,9 +1,11 @@
 import 'package:five_o_car_rental/Models/rent.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_appbar.dart';
+import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:map_mvvm/map_mvvm.dart';
 
 class ViewRentDetails extends StatefulWidget {
   const ViewRentDetails({Key? key, required this.rentid}) : super(key: key);
@@ -195,6 +197,31 @@ class _ViewRentDetailsState extends State<ViewRentDetails> {
                                 ),
                               ),
                             ),
+                            View<VehicleViewModel>(builder: (_, viewmodel) {
+                              return ElevatedButton(
+                                  style: raisedButtonStyle,
+                                  child: const Text('Cancel Booking'),
+                                  onPressed: () async {
+                                    //print(widget.rentid);
+                                    bool result = await viewmodel
+                                        .cancelBooking(widget.rentid);
+                                    if (result == true) {
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Rent Succesfully Canceled!')),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Unsuccessful')),
+                                      );
+                                    }
+                                  });
+                            })
                           ],
                         );
                       } else {

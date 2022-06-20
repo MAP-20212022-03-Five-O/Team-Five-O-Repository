@@ -82,4 +82,10 @@ class VehicleViewModel extends Viewmodel {
   //reserved vehicle
   Stream<QuerySnapshot<Object?>> getReservedVehicle() =>
       service.getReservedVehicle();
+
+  // cancel booking
+  Future<bool> cancelBooking(String rentid) async {
+    bool status = await service.cancelBooking(rentid);
+    return status;
+  }
 }
