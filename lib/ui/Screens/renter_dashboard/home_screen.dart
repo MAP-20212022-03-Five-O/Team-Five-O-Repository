@@ -2,6 +2,7 @@ import 'package:five_o_car_rental/app/routes.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/account_tab.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/booking_tab.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/explore_tab.dart';
+import 'package:five_o_car_rental/ui/Screens/renter_dashboard/history_tab.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_appbar.dart';
 import 'package:five_o_car_rental/viewmodel/user_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _RenterDashboardState extends State<RenterDashboard> {
   List<Widget> tabPages = [
     const ExploreTab(),
     const BookingTab(),
+    const HistoryTab(),
     const RenterAccountTab(),
   ];
 
@@ -83,6 +85,10 @@ class _RenterDashboardState extends State<RenterDashboard> {
             icon: Icon(Icons.directions_car),
             label: 'Booking',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],
       ),
@@ -103,9 +109,4 @@ class _RenterDashboardState extends State<RenterDashboard> {
       _pageIndex = index;
     });
   }
-
-  //logout
-  // Future<void> _signOut() async {
-  //   await FirebaseAuth.instance.signOut();
-  // }
 }

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Rent {
-  final String? ownerid, renterid, vehicleId, brand, plateNo;
+class History {
+  final String? ownerid, renterid, vehicleId, brand, plateNo, review;
   final DateTime? startDate, endDate;
   final double? totalPayment;
 
-  Rent(
+  History(
       {this.ownerid,
       this.renterid,
       this.vehicleId,
@@ -13,12 +13,13 @@ class Rent {
       this.endDate,
       this.totalPayment,
       this.brand,
-      this.plateNo});
+      this.plateNo,
+      this.review});
 
-  factory Rent.fromFirestore(DocumentSnapshot snapshot) {
+  factory History.fromFirestore(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
 
-    return Rent(
+    return History(
         ownerid: data['ownerid'],
         renterid: data['renterid'],
         vehicleId: data['vehicleId'],
@@ -26,7 +27,8 @@ class Rent {
         endDate: DateTime.parse(data['endDate'].toDate().toString()),
         totalPayment: data['totalPayment'],
         brand: data['brand'],
-        plateNo: data['plateNo']);
+        plateNo: data['plateNo'],
+        review: data['review']);
   }
 
   Map<String, dynamic> toMap() {
@@ -38,7 +40,8 @@ class Rent {
       'endDate': endDate,
       'totalPayment': totalPayment,
       'brand': brand,
-      'plateNo': plateNo
+      'plateNo': plateNo,
+      'review': review
     };
   }
 }

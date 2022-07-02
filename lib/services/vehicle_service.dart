@@ -10,6 +10,8 @@ class VehicleService extends VehicleServiceAbstract {
       FirebaseFirestore.instance.collection('vehicle');
   final CollectionReference rents =
       FirebaseFirestore.instance.collection('rent');
+  final CollectionReference history =
+      FirebaseFirestore.instance.collection('history');
   auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
   Vehicle vehicle = Vehicle();
 
@@ -52,15 +54,16 @@ class VehicleService extends VehicleServiceAbstract {
     try {
       String ownerid = _auth.currentUser!.uid;
       await vehicles.doc(vid).update(Vehicle(
-            vehicleLoc: vehicle.vehicleLoc,
-            plateNo: vehicle.plateNo,
-            brand: vehicle.brand,
-            capacity: vehicle.capacity,
-            carType: vehicle.carType,
-            manYear: vehicle.manYear,
-            price: vehicle.price,
-            ownerid: ownerid,
-          ).toMap());
+              vehicleLoc: vehicle.vehicleLoc,
+              plateNo: vehicle.plateNo,
+              brand: vehicle.brand,
+              capacity: vehicle.capacity,
+              carType: vehicle.carType,
+              manYear: vehicle.manYear,
+              price: vehicle.price,
+              ownerid: ownerid,
+              status: vehicle.status)
+          .toMap());
     } catch (e) {
       return false;
     }
@@ -156,6 +159,41 @@ class VehicleService extends VehicleServiceAbstract {
   @override
   Future<bool> cancelBooking(String rentid) async {
     try {
+      await rents.doc(rentid).delete();
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  //update car status when cancel booking.
+
+  @override
+  Future<bool> updateCancelVehicle(String vehicleId) async {
+    try {
+      await vehicles.doc(vehicleId).update({"status": 'available'});
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  //end rent
+  @override
+  Future<bool> endRent(Rent rent, String rentid) async {
+    try {
+      String renterid = _auth.currentUser!.uid;
+      await history.doc().set(Rent(
+              ownerid: rent.ownerid,
+              renterid: renterid,
+              vehicleId: rent.vehicleId,
+              startDate: rent.startDate,
+              endDate: rent.endDate,
+              totalPayment: rent.totalPayment,
+              brand: rent.brand,
+              plateNo: rent.plateNo)
+          .toMap());
+
       await rents.doc(rentid).delete();
     } catch (e) {
       return false;

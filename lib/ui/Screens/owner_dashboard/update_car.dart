@@ -41,6 +41,7 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
   String? vid;
   String carLocValue = 'Kuala Lumpur';
   String carTypeValue = 'Sedan';
+  String carStatus = 'available';
 
   Future _onUpdateCar(BuildContext context, VehicleViewModel viewmodel) async {
     Vehicle vehicle = Vehicle(
@@ -50,7 +51,8 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
         capacity: capacity,
         carType: carTypeValue,
         manYear: manYear,
-        price: price);
+        price: price,
+        status: carStatus);
     bool result = await viewmodel.updateVehicle(vehicle, vid);
     //print(result);
     if (result == true) {
@@ -134,6 +136,27 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
                                   'MPV',
                                   'Hatchback',
                                   'Pickup Trucks'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              child: DropdownButtonFormField<String>(
+                                hint: const Text('Car Status'),
+                                value: carStatus,
+                                decoration: const InputDecoration(
+                                    fillColor: Colors.black),
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (String? newValue) {},
+                                onSaved: (newValue) => carStatus = newValue!,
+                                items: <String>[
+                                  'available',
+                                  'Unavailable',
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,

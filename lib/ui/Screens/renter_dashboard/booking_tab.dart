@@ -5,6 +5,7 @@ import 'package:five_o_car_rental/app/service_locator.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/home_appbar.dart';
 import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:map_mvvm/map_mvvm.dart';
 
 class BookingTab extends StatefulWidget {
   const BookingTab({Key? key}) : super(key: key);
@@ -15,6 +16,8 @@ class BookingTab extends StatefulWidget {
 }
 
 late final VehicleViewModel _vehicleViewModel = locator.get<VehicleViewModel>();
+
+bool _visible = false;
 
 class _BookingTabState extends State<BookingTab> {
   @override
@@ -49,6 +52,17 @@ class _BookingTabState extends State<BookingTab> {
                   ),
                   ...rent.docs.map((rent) {
                     Rent rental = Rent.fromFirestore(rent);
+                    // kira hari
+                    DateTime dateTimeNow = DateTime.now();
+                    var difference =
+                        rental.endDate?.difference(dateTimeNow).inDays;
+                    int days = difference! + 1;
+
+                    if (days < 1) {
+                      _visible = true;
+                    } else {
+                      _visible = false;
+                    }
                     return Card(
                       shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -65,16 +79,52 @@ class _BookingTabState extends State<BookingTab> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_right,
-                                      color: Colors.black, size: 30),
-                                  tooltip: 'View Rent',
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.rentDetails,
-                                        arguments: rent.id);
-                                  },
-                                )
+                                View<VehicleViewModel>(builder: (_, viewmodel) {
+                                  return Visibility(
+                                    visible: _visible,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.no_crash_outlined,
+                                          color: Colors.black, size: 30),
+                                      tooltip: 'End Rent',
+                                      onPressed: () {
+                                        showAlertDialog(context)
+                                            .then((value) async {
+                                          if (value) {
+                                            Rent rentObj = Rent(
+                                                ownerid: rental.ownerid,
+                                                vehicleId: rental.vehicleId,
+                                                startDate: rental.startDate,
+                                                endDate: rental.endDate,
+                                                totalPayment:
+                                                    rental.totalPayment,
+                                                brand: rental.brand,
+                                                plateNo: rental.plateNo);
+
+                                            bool result = await viewmodel
+                                                .endRent(rentObj, rent.id);
+                                            await viewmodel.updateCancelVehicle(
+                                                rental.vehicleId!);
+                                            if (result == true) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        'Rent Has Been Ended!')),
+                                              );
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                    content:
+                                                        Text('Unsuccessful')),
+                                              );
+                                            }
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  );
+                                })
                               ],
                             ),
                             onTap: () => Navigator.pushNamed(
@@ -92,4 +142,38 @@ class _BookingTabState extends State<BookingTab> {
       ),
     );
   }
+}
+
+Future<dynamic> showAlertDialog(BuildContext context) async {
+  // set up the buttons
+  Widget yesButton = TextButton(
+    child: Text("Yes"),
+    onPressed: () {
+      Navigator.pop(context, true);
+    },
+  );
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context, false);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("End Rent"),
+    content: Text("Are you sure want to end this rent?"),
+    actions: [
+      yesButton,
+      cancelButton,
+    ],
+  );
+
+  // show the dialog
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

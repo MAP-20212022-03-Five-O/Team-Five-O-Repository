@@ -43,4 +43,10 @@ abstract class VehicleServiceAbstract with ServiceStream {
 
   //Cancel Booking
   Future<bool> cancelBooking(String rentid);
+
+  //Cancel Booking
+  Future<bool> endRent(Rent rent, String rentid);
+
+  //update
+  Future<bool> updateCancelVehicle(String vehicleId);
 }

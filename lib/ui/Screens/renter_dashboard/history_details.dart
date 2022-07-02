@@ -1,24 +1,24 @@
-import 'package:five_o_car_rental/Models/rent.dart';
+import 'package:five_o_car_rental/Models/history.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
 import 'package:five_o_car_rental/ui/Screens/renter_dashboard/home_appbar.dart';
-import 'package:five_o_car_rental/ui/button_style.dart';
-import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
+import 'package:five_o_car_rental/viewmodel/history_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:map_mvvm/map_mvvm.dart';
 
-class ViewRentDetails extends StatefulWidget {
-  const ViewRentDetails({Key? key, required this.rentid}) : super(key: key);
-  final String rentid;
-  static Route route(String rentid) =>
-      MaterialPageRoute(builder: (_) => ViewRentDetails(rentid: rentid));
+class ViewHistoryDetails extends StatefulWidget {
+  const ViewHistoryDetails({Key? key, required this.historyid})
+      : super(key: key);
+  final String historyid;
+  static Route route(String historyid) => MaterialPageRoute(
+      builder: (_) => ViewHistoryDetails(historyid: historyid));
+
   @override
-  State<ViewRentDetails> createState() => _ViewRentDetailsState();
+  State<ViewHistoryDetails> createState() => _ViewHistoryDetailsState();
 }
 
-late final VehicleViewModel _vehicleViewModel = locator.get<VehicleViewModel>();
+late final HistoryViewModel _historyViewModel = locator.get<HistoryViewModel>();
 
-class _ViewRentDetailsState extends State<ViewRentDetails> {
+class _ViewHistoryDetailsState extends State<ViewHistoryDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class _ViewRentDetailsState extends State<ViewRentDetails> {
                   text: const TextSpan(
                     children: [
                       TextSpan(
-                          text: 'Rent Details',
+                          text: 'History Details',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 28,
@@ -43,16 +43,17 @@ class _ViewRentDetailsState extends State<ViewRentDetails> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                StreamBuilder<Rent>(
-                    stream: _vehicleViewModel.getRentDetails(widget.rentid),
+                StreamBuilder<History>(
+                    stream:
+                        _historyViewModel.getHistoryDetails(widget.historyid),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        Rent rent = snapshot.data!;
+                        History history = snapshot.data!;
 
                         String startDate =
-                            DateFormat('dd-MM-yyyy').format(rent.startDate!);
+                            DateFormat('dd-MM-yyyy').format(history.startDate!);
                         String endDate =
-                            DateFormat('dd-MM-yyyy').format(rent.endDate!);
+                            DateFormat('dd-MM-yyyy').format(history.endDate!);
                         return Column(
                           children: [
                             SizedBox(
@@ -92,7 +93,7 @@ class _ViewRentDetailsState extends State<ViewRentDetails> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text(rent.brand!,
+                                          Text(history.brand!,
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -123,7 +124,7 @@ class _ViewRentDetailsState extends State<ViewRentDetails> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text(rent.plateNo!,
+                                          Text(history.plateNo!,
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -186,7 +187,7 @@ class _ViewRentDetailsState extends State<ViewRentDetails> {
                                         children: <Widget>[
                                           const Icon(Icons.arrow_right_outlined,
                                               color: Colors.blueGrey),
-                                          Text('${rent.totalPayment!}',
+                                          Text('${history.totalPayment!}',
                                               style: const TextStyle(
                                                   color: Colors.black))
                                         ],
@@ -196,33 +197,6 @@ class _ViewRentDetailsState extends State<ViewRentDetails> {
                                 ),
                               ),
                             ),
-                            View<VehicleViewModel>(builder: (_, viewmodel) {
-                              return ElevatedButton(
-                                  style: raisedButtonStyle,
-                                  child: const Text('Cancel Booking'),
-                                  onPressed: () async {
-                                    //print(widget.rentid);
-                                    bool result = await viewmodel
-                                        .cancelBooking(widget.rentid);
-                                    await viewmodel
-                                        .updateCancelVehicle(rent.vehicleId!);
-                                    if (result == true) {
-                                      Navigator.pop(context);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Rent Succesfully Canceled!')),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Unsuccessful')),
-                                      );
-                                    }
-                                  });
-                            })
                           ],
                         );
                       } else {

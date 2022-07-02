@@ -26,6 +26,8 @@ class _HomeTabState extends State<HomeTab> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final rent = snapshot.data!;
+                double? sum = 0;
+
                 return ListView(children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -48,6 +50,10 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                   ...rent.docs.map((rent) {
                     Rent rental = Rent.fromFirestore(rent);
+                    double profit;
+                    sum = sum! + rental.totalPayment!;
+                    profit = sum!;
+
                     return Card(
                       shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -82,7 +88,11 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     );
                   }).toList(),
-                  const SizedBox(height: 20)
+                  const SizedBox(height: 20),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Text(sum.toString()),
+                  )
                 ]);
               } else {
                 return const Center(child: CircularProgressIndicator());

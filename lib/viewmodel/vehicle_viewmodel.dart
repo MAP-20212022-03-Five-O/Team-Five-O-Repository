@@ -88,4 +88,15 @@ class VehicleViewModel extends Viewmodel {
     bool status = await service.cancelBooking(rentid);
     return status;
   }
+
+  // end rent
+  Future<bool> endRent(Rent rent, String rentid) async {
+    bool status = await service.endRent(rent, rentid);
+    return status;
+  }
+
+  Future<bool> updateCancelVehicle(String vehicleId) async {
+    bool status = await service.updateCancelVehicle(vehicleId);
+    return status;
+  }
 }
