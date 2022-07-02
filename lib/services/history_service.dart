@@ -22,4 +22,20 @@ class HistoryService extends HistoryServiceAbstract {
       .doc(historyid)
       .snapshots()
       .map((event) => History.fromFirestore(event));
+
+  @override
+  Future<bool> addReviews(String historyid, String reviews) async {
+    try {
+      await history.doc(historyid).update({"reviews": reviews});
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  Stream<QuerySnapshot<Object?>> getOwnerHistory() {
+    String ownerid = _auth.currentUser!.uid;
+    return history.where('ownerid', isEqualTo: ownerid).snapshots();
+  }
 }

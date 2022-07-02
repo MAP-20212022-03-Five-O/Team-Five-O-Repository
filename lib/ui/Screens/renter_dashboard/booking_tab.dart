@@ -57,12 +57,13 @@ class _BookingTabState extends State<BookingTab> {
                     var difference =
                         rental.endDate?.difference(dateTimeNow).inDays;
                     int days = difference! + 1;
-
-                    if (days < 1) {
+                    print(days);
+                    if (days <= 1) {
                       _visible = true;
                     } else {
                       _visible = false;
                     }
+
                     return Card(
                       shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),

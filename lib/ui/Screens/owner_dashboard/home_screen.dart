@@ -1,6 +1,7 @@
 import 'package:five_o_car_rental/app/routes.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/account_tab.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/car_tab.dart';
+import 'package:five_o_car_rental/ui/Screens/owner_dashboard/history_tab.dart';
 import 'package:five_o_car_rental/viewmodel/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:map_mvvm/map_mvvm.dart';
@@ -23,6 +24,7 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
   List<Widget> tabPages = [
     const HomeTab(),
     const CarTab(),
+    const HistoryTab(),
     const AccountTab(),
   ];
 
@@ -82,6 +84,10 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
           BottomNavigationBarItem(
             icon: Icon(Icons.car_rental),
             label: 'Car',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],

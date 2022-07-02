@@ -1,20 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class History {
-  final String? ownerid, renterid, vehicleId, brand, plateNo, review;
+  final String? ownerid, renterid, vehicleId, brand, plateNo, reviews;
   final DateTime? startDate, endDate;
   final double? totalPayment;
 
-  History(
-      {this.ownerid,
-      this.renterid,
-      this.vehicleId,
-      this.startDate,
-      this.endDate,
-      this.totalPayment,
-      this.brand,
-      this.plateNo,
-      this.review});
+  History({
+    this.ownerid,
+    this.renterid,
+    this.vehicleId,
+    this.startDate,
+    this.endDate,
+    this.totalPayment,
+    this.brand,
+    this.plateNo,
+    this.reviews,
+  });
 
   factory History.fromFirestore(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
@@ -28,7 +29,7 @@ class History {
         totalPayment: data['totalPayment'],
         brand: data['brand'],
         plateNo: data['plateNo'],
-        review: data['review']);
+        reviews: data['reviews']);
   }
 
   Map<String, dynamic> toMap() {
@@ -41,7 +42,7 @@ class History {
       'totalPayment': totalPayment,
       'brand': brand,
       'plateNo': plateNo,
-      'review': review
+      'reviews': reviews
     };
   }
 }

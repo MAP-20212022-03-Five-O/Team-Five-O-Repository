@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:five_o_car_rental/Models/history.dart';
 import 'package:five_o_car_rental/Models/rent.dart';
 import 'package:five_o_car_rental/Models/vehicle.dart';
 import 'package:five_o_car_rental/Services/database_manager.dart';
@@ -183,7 +184,7 @@ class VehicleService extends VehicleServiceAbstract {
   Future<bool> endRent(Rent rent, String rentid) async {
     try {
       String renterid = _auth.currentUser!.uid;
-      await history.doc().set(Rent(
+      await history.doc().set(History(
               ownerid: rent.ownerid,
               renterid: renterid,
               vehicleId: rent.vehicleId,
@@ -191,7 +192,8 @@ class VehicleService extends VehicleServiceAbstract {
               endDate: rent.endDate,
               totalPayment: rent.totalPayment,
               brand: rent.brand,
-              plateNo: rent.plateNo)
+              plateNo: rent.plateNo,
+              reviews: "No Review Yet")
           .toMap());
 
       await rents.doc(rentid).delete();

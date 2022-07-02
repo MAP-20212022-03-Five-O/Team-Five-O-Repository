@@ -26,7 +26,6 @@ class _HomeTabState extends State<HomeTab> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final rent = snapshot.data!;
-                double? sum = 0;
 
                 return ListView(children: [
                   Row(
@@ -50,9 +49,6 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                   ...rent.docs.map((rent) {
                     Rent rental = Rent.fromFirestore(rent);
-                    double profit;
-                    sum = sum! + rental.totalPayment!;
-                    profit = sum!;
 
                     return Card(
                       shape: OutlineInputBorder(
@@ -88,11 +84,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     );
                   }).toList(),
-                  const SizedBox(height: 20),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Text(sum.toString()),
-                  )
+                  const SizedBox(height: 20)
                 ]);
               } else {
                 return const Center(child: CircularProgressIndicator());

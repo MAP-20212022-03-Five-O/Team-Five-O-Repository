@@ -18,7 +18,7 @@ class HistoryViewModel extends Viewmodel {
     notifyListenersOnFailure = false;
   }
 
-  //get all rent history
+  //get all renter history
   Stream<QuerySnapshot<Object?>> getRenterHistory() {
     return service.getRenterHistory();
   }
@@ -26,4 +26,12 @@ class HistoryViewModel extends Viewmodel {
   //get only selected history
   Stream<History> getHistoryDetails(String historyid) =>
       service.getHistoryDetails(historyid);
+
+  Future<bool> addReviews(String historyid, String reviews) =>
+      service.addReviews(historyid, reviews);
+
+  //get all rent history
+  Stream<QuerySnapshot<Object?>> getOwnerHistory() {
+    return service.getOwnerHistory();
+  }
 }

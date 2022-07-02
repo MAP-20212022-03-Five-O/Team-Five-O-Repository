@@ -2,12 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:five_o_car_rental/Models/history.dart';
 import 'package:five_o_car_rental/app/routes.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
+import 'package:five_o_car_rental/ui/button_style.dart';
 import 'package:five_o_car_rental/viewmodel/history_viewmodel.dart';
 import 'package:flutter/material.dart';
-
-import 'package:map_mvvm/view.dart';
-
-import '../../button_style.dart';
 
 class HistoryTab extends StatefulWidget {
   const HistoryTab({Key? key}) : super(key: key);
@@ -23,9 +20,10 @@ class _HistoryTabState extends State<HistoryTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.all(8.0),
         child: StreamBuilder<QuerySnapshot>(
-            stream: _historyViewModel.getRenterHistory(),
+            stream: _historyViewModel.getOwnerHistory(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final history = snapshot.data!;
@@ -40,7 +38,7 @@ class _HistoryTabState extends State<HistoryTab> {
                         text: const TextSpan(
                           children: [
                             TextSpan(
-                                text: 'My Rent History',
+                                text: 'My Sales History',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 28,
@@ -74,7 +72,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                 IconButton(
                                   icon: const Icon(Icons.visibility,
                                       color: Colors.black, size: 30),
-                                  tooltip: 'End Rent',
+                                  tooltip: 'View Details',
                                   onPressed: () {
                                     Navigator.pushNamed(
                                         context, Routes.historyDetails,
@@ -84,9 +82,9 @@ class _HistoryTabState extends State<HistoryTab> {
                                 IconButton(
                                   icon: const Icon(Icons.reviews_outlined,
                                       color: Colors.black, size: 30),
-                                  tooltip: 'Add Review',
+                                  tooltip: 'View Review',
                                   onPressed: () {
-                                    _displayDialog(context, history.id).then;
+                                    _displayDialog(context, h.reviews).then;
                                   },
                                 ),
                               ],
@@ -97,7 +95,7 @@ class _HistoryTabState extends State<HistoryTab> {
                       ),
                     );
                   }).toList(),
-                  const SizedBox(height: 120),
+                  const SizedBox(height: 100),
                   Center(
                     child: Align(
                       child: Container(
@@ -117,7 +115,7 @@ class _HistoryTabState extends State<HistoryTab> {
                           ],
                         ),
                         child: Center(
-                          child: Text("Total Spent: RM" + sum.toString(),
+                          child: Text("Total Income Sales: RM" + sum.toString(),
                               style: const TextStyle(
                                   fontSize: 20, color: Colors.white)),
                         ),
@@ -134,30 +132,21 @@ class _HistoryTabState extends State<HistoryTab> {
   }
 }
 
-TextEditingController _textFieldController = TextEditingController();
-_displayDialog(BuildContext context, String historyid) async {
+_displayDialog(BuildContext context, String? reviews) async {
   return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Add Your Reviews'),
-          content: TextField(
-            controller: _textFieldController,
-            textInputAction: TextInputAction.go,
-            decoration: const InputDecoration(hintText: "Enter Your Reviews"),
-          ),
+          title: const Text('Customer Review'),
+          content: Text(reviews!),
           actions: <Widget>[
-            View<HistoryViewModel>(builder: (_, viewmodel) {
-              return ElevatedButton(
-                style: raisedButtonStyle,
-                child: const Text('Submit'),
-                onPressed: () async {
-                  await viewmodel.addReviews(
-                      historyid, _textFieldController.text);
-                  Navigator.of(context).pop();
-                },
-              );
-            })
+            ElevatedButton(
+              style: raisedButtonStyle,
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
           ],
         );
       });
