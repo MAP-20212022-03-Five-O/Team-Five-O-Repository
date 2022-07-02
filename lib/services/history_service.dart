@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:five_o_car_rental/Models/history.dart';
+import 'package:five_o_car_rental/Models/sales.dart';
 
 import 'history_service_abstract.dart';
 
@@ -35,6 +36,25 @@ class HistoryService extends HistoryServiceAbstract {
 
   @override
   Stream<QuerySnapshot<Object?>> getOwnerHistory() {
+    String ownerid = _auth.currentUser!.uid;
+    return history.where('ownerid', isEqualTo: ownerid).snapshots();
+  }
+
+  List<Sales> sales = [];
+  Map<String, double> getBrandData() {
+    Map<String, double> catMap = {};
+    for (var item in sales) {
+      if (catMap.containsKey(item.brand) == false) {
+        catMap[item.brand] = 1;
+      } else {
+        catMap.update(item.brand, (int) => catMap[item.brand]! + 1);
+      }
+    }
+    return catMap;
+  }
+
+  @override
+  Stream<QuerySnapshot> getHistoryData() {
     String ownerid = _auth.currentUser!.uid;
     return history.where('ownerid', isEqualTo: ownerid).snapshots();
   }

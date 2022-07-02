@@ -34,4 +34,9 @@ class HistoryViewModel extends Viewmodel {
   Stream<QuerySnapshot<Object?>> getOwnerHistory() {
     return service.getOwnerHistory();
   }
+
+  //get all rent history
+  Stream<QuerySnapshot> getHistoryData() {
+    return service.getHistoryData();
+  }
 }

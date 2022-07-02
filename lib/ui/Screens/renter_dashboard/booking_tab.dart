@@ -52,17 +52,6 @@ class _BookingTabState extends State<BookingTab> {
                   ),
                   ...rent.docs.map((rent) {
                     Rent rental = Rent.fromFirestore(rent);
-                    // kira hari
-                    DateTime dateTimeNow = DateTime.now();
-                    var difference =
-                        rental.endDate?.difference(dateTimeNow).inDays;
-                    int days = difference! + 1;
-                    print(days);
-                    if (days <= 1) {
-                      _visible = true;
-                    } else {
-                      _visible = false;
-                    }
 
                     return Card(
                       shape: OutlineInputBorder(
@@ -81,49 +70,45 @@ class _BookingTabState extends State<BookingTab> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 View<VehicleViewModel>(builder: (_, viewmodel) {
-                                  return Visibility(
-                                    visible: _visible,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.no_crash_outlined,
-                                          color: Colors.black, size: 30),
-                                      tooltip: 'End Rent',
-                                      onPressed: () {
-                                        showAlertDialog(context)
-                                            .then((value) async {
-                                          if (value) {
-                                            Rent rentObj = Rent(
-                                                ownerid: rental.ownerid,
-                                                vehicleId: rental.vehicleId,
-                                                startDate: rental.startDate,
-                                                endDate: rental.endDate,
-                                                totalPayment:
-                                                    rental.totalPayment,
-                                                brand: rental.brand,
-                                                plateNo: rental.plateNo);
+                                  return IconButton(
+                                    icon: const Icon(Icons.no_crash_outlined,
+                                        color: Colors.black, size: 30),
+                                    tooltip: 'End Rent',
+                                    onPressed: () {
+                                      showAlertDialog(context)
+                                          .then((value) async {
+                                        if (value) {
+                                          Rent rentObj = Rent(
+                                              ownerid: rental.ownerid,
+                                              vehicleId: rental.vehicleId,
+                                              startDate: rental.startDate,
+                                              endDate: rental.endDate,
+                                              totalPayment: rental.totalPayment,
+                                              brand: rental.brand,
+                                              plateNo: rental.plateNo);
 
-                                            bool result = await viewmodel
-                                                .endRent(rentObj, rent.id);
-                                            await viewmodel.updateCancelVehicle(
-                                                rental.vehicleId!);
-                                            if (result == true) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                    content: Text(
-                                                        'Rent Has Been Ended!')),
-                                              );
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                    content:
-                                                        Text('Unsuccessful')),
-                                              );
-                                            }
+                                          bool result = await viewmodel.endRent(
+                                              rentObj, rent.id);
+                                          await viewmodel.updateCancelVehicle(
+                                              rental.vehicleId!);
+                                          if (result == true) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      'Rent Has Been Ended!')),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content:
+                                                      Text('Unsuccessful')),
+                                            );
                                           }
-                                        });
-                                      },
-                                    ),
+                                        }
+                                      });
+                                    },
                                   );
                                 })
                               ],

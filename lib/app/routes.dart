@@ -1,6 +1,7 @@
 import 'package:five_o_car_rental/ui/Screens/login/login_screen.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/addcar_screen.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/home_screen.dart';
+import 'package:five_o_car_rental/ui/Screens/owner_dashboard/sales_report.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/update_profile.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/view_car_details.dart';
 import 'package:five_o_car_rental/ui/Screens/register/register_screen.dart';
@@ -34,6 +35,7 @@ class Routes {
   static const String bookingTab = '/bookingTab';
   static const String rentDetails = '/rentDetails';
   static const String historyDetails = '/historyDetails';
+  static const String salesReport = '/salesReport';
 
   static Route<dynamic>? createRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -67,6 +69,8 @@ class Routes {
         return ViewRentDetails.route(settings.arguments.toString());
       case historyDetails:
         return ViewHistoryDetails.route(settings.arguments.toString());
+      case salesReport:
+        return SalesReport.route();
     }
     return null;
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:five_o_car_rental/Models/user.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
 import 'package:five_o_car_rental/ui/app_bar.dart';
@@ -20,7 +22,6 @@ class UpdateUserProfile extends StatefulWidget {
 }
 
 late final UserViewModel _userViewModel = locator.get<UserViewModel>();
-late final BuildContext _context;
 
 class _UpdateUserProfileState extends State<UpdateUserProfile> {
   auth.User? user = auth.FirebaseAuth.instance.currentUser;
@@ -102,7 +103,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                   return null;
                                 }
                               },
-                              controller: icController..text = '${user.ic}',
+                              controller: icController..text = user.ic,
                               onSaved: (newValue) => ic = newValue,
                               decoration: icDecoration(),
                             ),
@@ -123,7 +124,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                 }
                               },
                               controller: phonenoController
-                                ..text = '${user.phoneno}',
+                                ..text = user.phoneno,
                               onSaved: (newValue) => phoneno = newValue,
                               decoration: phonenoDecoration(),
                             ),
@@ -139,8 +140,7 @@ class _UpdateUserProfileState extends State<UpdateUserProfile> {
                                 }
                               },
                               readOnly: true,
-                              controller: emailController
-                                ..text = '${user.email}',
+                              controller: emailController..text = user.email,
                               onSaved: (newValue) => email = newValue,
                               decoration: emailDecoration(),
                             ),

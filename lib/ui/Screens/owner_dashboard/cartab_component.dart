@@ -49,13 +49,13 @@ ElevatedButton AddCarButton(BuildContext context) {
 Future<dynamic> showAlertDialog(BuildContext context) async {
   // set up the buttons
   Widget yesButton = TextButton(
-    child: Text("Yes"),
+    child: const Text("Yes"),
     onPressed: () {
       Navigator.pop(context, true);
     },
   );
   Widget cancelButton = TextButton(
-    child: Text("Cancel"),
+    child: const Text("Cancel"),
     onPressed: () {
       Navigator.pop(context, false);
     },
@@ -63,8 +63,8 @@ Future<dynamic> showAlertDialog(BuildContext context) async {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Delete Car"),
-    content: Text("Are you sure to delete this car?"),
+    title: const Text("Delete Car"),
+    content: const Text("Are you sure to delete this car?"),
     actions: [
       yesButton,
       cancelButton,

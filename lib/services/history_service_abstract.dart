@@ -15,4 +15,7 @@ abstract class HistoryServiceAbstract with ServiceStream {
 
   //get list of owner History
   Stream<QuerySnapshot<Object?>> getOwnerHistory();
+
+  //get list of owner History
+  Stream<QuerySnapshot> getHistoryData();
 }
