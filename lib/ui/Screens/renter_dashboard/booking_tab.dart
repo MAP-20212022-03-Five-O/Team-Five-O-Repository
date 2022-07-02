@@ -3,6 +3,7 @@ import 'package:five_o_car_rental/Models/rent.dart';
 import 'package:five_o_car_rental/app/routes.dart';
 import 'package:five_o_car_rental/app/service_locator.dart';
 import 'package:five_o_car_rental/ui/Screens/owner_dashboard/home_appbar.dart';
+import 'package:five_o_car_rental/ui/Screens/renter_dashboard/pdf_preview_page.dart';
 import 'package:five_o_car_rental/viewmodel/vehicle_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:map_mvvm/map_mvvm.dart';
@@ -110,7 +111,30 @@ class _BookingTabState extends State<BookingTab> {
                                       });
                                     },
                                   );
-                                })
+                                }),
+                                View<VehicleViewModel>(builder: (_, viewmodel) {
+                                  return IconButton(
+                                      icon: const Icon(Icons.download_outlined,
+                                          color: Colors.black, size: 30),
+                                      tooltip: 'Download PDF Invoice',
+                                      onPressed: () {
+                                        Rent rentObj = Rent(
+                                            renterid: rental.renterid,
+                                            vehicleId: rental.vehicleId,
+                                            startDate: rental.startDate,
+                                            endDate: rental.endDate,
+                                            totalPayment: rental.totalPayment,
+                                            ownerid: rental.ownerid,
+                                            brand: rental.brand,
+                                            plateNo: rental.plateNo);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PdfPreviewPage(
+                                                      rent: rentObj)),
+                                        );
+                                      });
+                                }),
                               ],
                             ),
                             onTap: () => Navigator.pushNamed(
