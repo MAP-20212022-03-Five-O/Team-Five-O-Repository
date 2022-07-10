@@ -55,7 +55,7 @@ class _SalesReportState extends State<SalesReport> {
                       child: ListView(children: [
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [pieChartExampleOne()],
+                          children: [Expanded(child: pieChartExampleOne())],
                         ),
                       ]),
                     );
