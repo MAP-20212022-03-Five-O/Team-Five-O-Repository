@@ -23,50 +23,48 @@ class _SalesReportState extends State<SalesReport> {
     return Scaffold(
       appBar: appBar(),
       body: Center(
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 50,
+            ),
+            RichText(
+              text: const TextSpan(
+                children: [
+                  TextSpan(
+                      text: 'My Sales Report',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700)),
+                ],
               ),
-              RichText(
-                text: const TextSpan(
-                  children: [
-                    TextSpan(
-                        text: 'My Sales Report',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w700)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 100),
-              StreamBuilder<Object>(
-                stream: _historyViewModel.getHistoryData(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final data = snapshot.requireData;
-                    print("Data: $data");
-                    getExpfromSanapshot(data);
-                    return Expanded(
-                      child: ListView(children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Expanded(child: pieChartExampleOne())],
-                        ),
-                      ]),
-                    );
-                  } else {
-                    return const Expanded(
-                        child: Center(child: Text("No data available.")));
-                  }
-                },
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 100),
+            StreamBuilder<Object>(
+              stream: _historyViewModel.getHistoryData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final data = snapshot.requireData;
+                  print("Data: $data");
+                  getExpfromSanapshot(data);
+                  return Expanded(
+                    child: ListView(children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [pieChartExampleOne()],
+                      ),
+                    ]),
+                  );
+                } else {
+                  return const Expanded(
+                      child: Center(child: Text("No data available.")));
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
